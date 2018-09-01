@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="1">
+
+    <EditText
+        android:layout_width="297dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/Contact1"
+        android:layout_marginTop="52dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignLeft="@+id/Contact2"
+        android:layout_alignStart="@+id/Contact2" />
+
+    <EditText
+        android:layout_width="297dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/Contact2"
+        android:layout_below="@+id/Contact1"
+        android:layout_alignLeft="@+id/Contact3"
+        android:layout_alignStart="@+id/Contact3" />
+
+    <EditText
+        android:layout_width="297dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/Contact3"
+        android:layout_below="@+id/Contact2"
+        android:layout_centerHorizontal="true" />
+
+    <EditText
+        android:layout_width="297dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/Contact4"
+        android:layout_below="@+id/Contact3"
+        android:layout_alignLeft="@+id/Contact3"
+        android:layout_alignStart="@+id/Contact3" />
+
+    <EditText
+        android:layout_width="297dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/Contact5"
+        android:layout_centerVertical="true"
+        android:layout_alignLeft="@+id/Contact4"
+        android:layout_alignStart="@+id/Contact4" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Main"
+        android:id="@+id/toMainBtn"
+        android:layout_marginBottom="30dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignLeft="@+id/Contact5"
+        android:layout_alignStart="@+id/Contact5" />
+</RelativeLayout>
