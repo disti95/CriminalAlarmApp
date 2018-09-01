@@ -123,25 +123,30 @@ public class MainActivity extends Activity implements LocationListener {
         IsActive = false;
     }else{
 
-        Thread thread = new Thread() {
-            @Override
-            public void run() {
-                try {
-                    IsActive = true;
-                    while(!stopThread) {
-                        DoSendStandartMessage();
-                        sleep(2000);
-                        DoSendLocation();
-                        sleep(TIME_DELAY);
+        try{
+            Thread thread = new Thread() {
+                @Override
+                public void run() {
+                    try {
+                        IsActive = true;
+                        while(!stopThread) {
+                            DoSendStandartMessage();
+                            sleep(2000);
+                            DoSendLocation();
+                            sleep(TIME_DELAY);
+                        }
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
                     }
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
                 }
-            }
-        };
+            };
 
-        stopThread = false;
-        thread.start();
+            stopThread = false;
+            thread.start();
+        }catch(Exception ex){
+            int a = 1;
+        }
+
 
     }
 
