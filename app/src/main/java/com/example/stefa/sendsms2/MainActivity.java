@@ -6,6 +6,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.StateListDrawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -28,7 +32,7 @@ import java.util.Locale;
 
 public class MainActivity extends Activity implements LocationListener {
 
-    ImageButton sendSMSBtn;
+    Button sendSMSBtn;
     Button configBtn;
     EditText toPhoneNumberET;
     EditText smsMessageET;
@@ -49,7 +53,7 @@ public class MainActivity extends Activity implements LocationListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        sendSMSBtn = (ImageButton) findViewById(R.id.sendSMSBtn);
+        sendSMSBtn = (Button) findViewById(R.id.sendSMSBtn);
         toPhoneNumberET = (EditText) findViewById(R.id.toPhoneNumberET);
         smsMessageET = (EditText) findViewById(R.id.smsMessageET);
         sendSMSBtn.setOnClickListener(new View.OnClickListener() {
@@ -110,26 +114,61 @@ public class MainActivity extends Activity implements LocationListener {
 
         LocationManager locationManager;
         locationManager = (LocationManager)getSystemService(LOCATION_SERVICE);
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+        //locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this);
     }
 
     protected void sendSMS() {
 
 
-    ArrayList currentNumbers=getNumbers();
+    final ArrayList currentNumbers=getNumbers();
 
     if(IsActive){
         stopThread = true;
         IsActive = false;
+        GradientDrawable gradientDrawable = (GradientDrawable) sendSMSBtn.getBackground().mutate();
+        gradientDrawable.setColor(Color.RED);
     }else{
 
+        //sendSMSBtn.setBackgroundColor(Color.GREEN);
+
+        GradientDrawable gradientDrawable = (GradientDrawable) sendSMSBtn.getBackground().mutate();
+        gradientDrawable.setColor(Color.GREEN);
+
         try{
-            Thread thread = new Thread() {
+            Thread thread = new Thread(new Runnable() {
+                private ArrayList Numbers;
+                {
+                    this.Numbers = currentNumbers;
+                }
                 @Override
+                public void run() {
+
+                    try {
+                        IsActive = true;
+                        while(!stopThread) {
+
+                            for (Object number : currentNumbers) {
+                                DoSendStandartMessage(number.toString());
+                                Thread.sleep(2000);
+                                DoSendLocation(number.toString());
+
+                            }
+                            Thread.sleep(TIME_DELAY);
+                        }
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            }) {
+               /* @Override
                 public void run() {
                     try {
                         IsActive = true;
                         while(!stopThread) {
+
+                            //for (String number : currentNumbers) {
                             DoSendStandartMessage();
                             sleep(2000);
                             DoSendLocation();
@@ -138,7 +177,7 @@ public class MainActivity extends Activity implements LocationListener {
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                }
+                }*/
             };
 
             stopThread = false;
@@ -191,8 +230,8 @@ public class MainActivity extends Activity implements LocationListener {
         return numbers;
     }
 
-    public void DoSendStandartMessage(){
-        String toPhoneNumber = toPhoneNumberET.getText().toString();
+    public void DoSendStandartMessage(String currentNumber){
+        //String toPhoneNumber = toPhoneNumberET.getText().toString();
         String smsMessage = smsMessageET.getText().toString();
         Date currentTime = Calendar.getInstance().getTime();
         Geocoder geocoder;
@@ -202,22 +241,34 @@ public class MainActivity extends Activity implements LocationListener {
 
         try {
 
-        addresses = geocoder.getFromLocation(currentLattitude, currentLongitude, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
-        String address = addresses.get(0).getAddressLine(0);
-        smsMessage = smsMessage + " \nZeitpunkt: " + currentTime.toString()
-                + " \nLängengrad: " + currentLongitude.toString()
-                + " \nBreitengrad: " + currentLattitude.toString()
-                + " \nAdresse: " + address;
-        //+ " \nLink: " + googleMapsHeader + address.replace(" ", "");
+         if(currentLattitude == null || currentLongitude == null){
 
-        //}
+             stopThread = true;
+             GradientDrawable gradientDrawable = (GradientDrawable) sendSMSBtn.getBackground().mutate();
+             gradientDrawable.setColor(Color.RED);
+             Toast.makeText(getApplicationContext(),
+                     "No gps values!",
+                     Toast.LENGTH_LONG).show();
+         }else{
 
-        // message can have only 160 characters
-        SmsManager smsManager = SmsManager.getDefault();
-        ArrayList<String> parts = smsManager.divideMessage(smsMessage);
-        smsManager.sendMultipartTextMessage(toPhoneNumber, null, parts, null, null);
+             addresses = geocoder.getFromLocation(currentLattitude, currentLongitude, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
+             String address = addresses.get(0).getAddressLine(0);
+             smsMessage = smsMessage + " \nZeitpunkt: " + currentTime.toString()
+                     + " \nLängengrad: " + currentLongitude.toString()
+                     + " \nBreitengrad: " + currentLattitude.toString()
+                     + " \nAdresse: " + address;
+             //+ " \nLink: " + googleMapsHeader + address.replace(" ", "");
 
-        //SystemClock.sleep(1000);
+             //}
+
+             // message can have only 160 characters
+             SmsManager smsManager = SmsManager.getDefault();
+             ArrayList<String> parts = smsManager.divideMessage(smsMessage);
+             smsManager.sendMultipartTextMessage(currentNumber, null, parts, null, null);
+
+             //SystemClock.sleep(1000);
+         }
+
 
 
 
@@ -232,8 +283,8 @@ public class MainActivity extends Activity implements LocationListener {
 
     }
 
-    public void DoSendLocation(){
-        String toPhoneNumber = toPhoneNumberET.getText().toString();
+    public void DoSendLocation(String currentNumber){
+        // toPhoneNumber = toPhoneNumberET.getText().toString();
         String smsMessage = smsMessageET.getText().toString();
         Date currentTime = Calendar.getInstance().getTime();
         Geocoder geocoder;
@@ -243,13 +294,25 @@ public class MainActivity extends Activity implements LocationListener {
 
         try{
 
-            addresses = geocoder.getFromLocation(currentLattitude, currentLongitude, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
-            String address = addresses.get(0).getAddressLine(0);
+            if(currentLattitude == null || currentLongitude == null){
 
-            SmsManager smsManager = SmsManager.getDefault();
-            smsManager.sendTextMessage(toPhoneNumber, null, googleMapsHeader + address.replace(" ", ""), null, null);
+                stopThread = true;
+                GradientDrawable gradientDrawable = (GradientDrawable) sendSMSBtn.getBackground().mutate();
+                gradientDrawable.setColor(Color.RED);
+                Toast.makeText(getApplicationContext(),
+                        "No gps values!",
+                        Toast.LENGTH_LONG).show();
+            }else{
+
+                addresses = geocoder.getFromLocation(currentLattitude, currentLongitude, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
+                String address = addresses.get(0).getAddressLine(0);
+
+                SmsManager smsManager = SmsManager.getDefault();
+                smsManager.sendTextMessage(currentNumber, null, googleMapsHeader + address.replace(" ", ""), null, null);
             /*Toast.makeText(getApplicationContext(), "SMS sent.",
                     Toast.LENGTH_LONG).show();*/
+            }
+
 
         }catch (Exception e) {
             Toast.makeText(getApplicationContext(),

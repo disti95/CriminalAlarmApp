@@ -52,12 +52,27 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" />
 
-    <ImageButton
+    <!--<ImageButton
         android:layout_width="250dp"
         android:layout_height="280dp"
         android:id="@+id/sendSMSBtn"
-        android:src="@drawable/helpred"
+        android:src="@drawable/alarm_inactive_300px"
         android:layout_centerHorizontal="true"
-        android:layout_below="@+id/smsMessageET" />
+        android:layout_below="@+id/smsMessageET" /> -->
 
-</RelativeLayout >
+     <Button
+         android:layout_width="250dp"
+         android:layout_height="250dp"
+         android:text="Help Me"
+         android:background="@drawable/circle"
+         android:padding="15dp"
+         android:textColor="#fff"
+         android:layout_below="@+id/smsMessageET"
+         android:id="@+id/sendSMSBtn"
+         android:layout_centerHorizontal="true"
+
+         />
+
+
+
+ </RelativeLayout >
