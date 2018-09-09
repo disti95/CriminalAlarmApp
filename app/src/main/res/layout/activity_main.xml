@@ -5,7 +5,7 @@
     android:background="#40ebd4"
     android:weightSum="1">
 
-    <TextView
+    <!--<TextView
         android:id="@+id/toPhoneNumberTV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -39,7 +39,7 @@
         android:inputType="textMultiLine"
         android:layout_below="@+id/smsMessageTV"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true" />-->
 
 
 
@@ -67,11 +67,10 @@
          android:background="@drawable/circle"
          android:padding="15dp"
          android:textColor="#fff"
-         android:layout_below="@+id/smsMessageET"
          android:id="@+id/sendSMSBtn"
-         android:layout_centerHorizontal="true"
 
-         />
+         android:layout_centerVertical="true"
+         android:layout_centerHorizontal="true" />
 
 
 

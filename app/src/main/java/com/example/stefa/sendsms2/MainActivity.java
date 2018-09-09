@@ -54,8 +54,8 @@ public class MainActivity extends Activity implements LocationListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         sendSMSBtn = (Button) findViewById(R.id.sendSMSBtn);
-        toPhoneNumberET = (EditText) findViewById(R.id.toPhoneNumberET);
-        smsMessageET = (EditText) findViewById(R.id.smsMessageET);
+        //toPhoneNumberET = (EditText) findViewById(R.id.toPhoneNumberET);
+        //smsMessageET = (EditText) findViewById(R.id.smsMessageET);
         sendSMSBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 sendSMS();
@@ -122,6 +122,7 @@ public class MainActivity extends Activity implements LocationListener {
 
 
     final ArrayList currentNumbers=getNumbers();
+    final String message = getMessage();
 
     if(IsActive){
         stopThread = true;
@@ -138,8 +139,10 @@ public class MainActivity extends Activity implements LocationListener {
         try{
             Thread thread = new Thread(new Runnable() {
                 private ArrayList Numbers;
+                private String Message;
                 {
                     this.Numbers = currentNumbers;
+                    this.Message = message;
                 }
                 @Override
                 public void run() {
@@ -149,7 +152,7 @@ public class MainActivity extends Activity implements LocationListener {
                         while(!stopThread) {
 
                             for (Object number : currentNumbers) {
-                                DoSendStandartMessage(number.toString());
+                                DoSendStandartMessage(number.toString(), Message);
                                 Thread.sleep(2000);
                                 DoSendLocation(number.toString());
 
@@ -230,9 +233,19 @@ public class MainActivity extends Activity implements LocationListener {
         return numbers;
     }
 
-    public void DoSendStandartMessage(String currentNumber){
+    public String getMessage() {
+        SharedPreferences sharedPreferences= this.getSharedPreferences("gameSetting", Context.MODE_PRIVATE);
+        String message=sharedPreferences.getString("message", "Default");
+        if(!message.isEmpty()){
+            return message;
+        }
+
+        return null;
+    }
+
+    public void DoSendStandartMessage(String currentNumber, String message){
         //String toPhoneNumber = toPhoneNumberET.getText().toString();
-        String smsMessage = smsMessageET.getText().toString();
+        //String smsMessage = smsMessageET.getText().toString();
         Date currentTime = Calendar.getInstance().getTime();
         Geocoder geocoder;
         List<Address> addresses;
@@ -253,7 +266,7 @@ public class MainActivity extends Activity implements LocationListener {
 
              addresses = geocoder.getFromLocation(currentLattitude, currentLongitude, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
              String address = addresses.get(0).getAddressLine(0);
-             smsMessage = smsMessage + " \nZeitpunkt: " + currentTime.toString()
+             message = message + " \nZeitpunkt: " + currentTime.toString()
                      + " \nLängengrad: " + currentLongitude.toString()
                      + " \nBreitengrad: " + currentLattitude.toString()
                      + " \nAdresse: " + address;
@@ -263,7 +276,7 @@ public class MainActivity extends Activity implements LocationListener {
 
              // message can have only 160 characters
              SmsManager smsManager = SmsManager.getDefault();
-             ArrayList<String> parts = smsManager.divideMessage(smsMessage);
+             ArrayList<String> parts = smsManager.divideMessage(message);
              smsManager.sendMultipartTextMessage(currentNumber, null, parts, null, null);
 
              //SystemClock.sleep(1000);
@@ -285,7 +298,6 @@ public class MainActivity extends Activity implements LocationListener {
 
     public void DoSendLocation(String currentNumber){
         // toPhoneNumber = toPhoneNumberET.getText().toString();
-        String smsMessage = smsMessageET.getText().toString();
         Date currentTime = Calendar.getInstance().getTime();
         Geocoder geocoder;
         List<Address> addresses;

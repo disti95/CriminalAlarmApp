@@ -20,6 +20,7 @@ public class ConfigActivity extends Activity {
     EditText contact3;
     EditText contact4;
     EditText contact5;
+    EditText message;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.config);
@@ -40,6 +41,7 @@ public class ConfigActivity extends Activity {
         contact3 = (EditText) findViewById(R.id.Contact3);
         contact4 = (EditText) findViewById(R.id.Contact4);
         contact5 = (EditText) findViewById(R.id.Contact5);
+        message = (EditText) findViewById(R.id.message);
 
         if(sharedPreferences!= null) {
             String number1=sharedPreferences.getString("contact1", "Default");
@@ -62,6 +64,10 @@ public class ConfigActivity extends Activity {
             if(number5 != "Default"){
                 contact5.setText(number5);
             }
+            String messageStr=sharedPreferences.getString("message", "Default");
+            if(messageStr != "Default"){
+                message.setText(messageStr);
+            }
 
 
         }
@@ -79,12 +85,14 @@ public class ConfigActivity extends Activity {
         contact3 = (EditText) findViewById(R.id.Contact3);
         contact4 = (EditText) findViewById(R.id.Contact4);
         contact5 = (EditText) findViewById(R.id.Contact5);
+        message = (EditText) findViewById(R.id.message);
 
         editor.putString("contact1",contact1.getText().toString());
         editor.putString("contact2",contact2.getText().toString());
         editor.putString("contact3",contact3.getText().toString());
         editor.putString("contact4",contact4.getText().toString());
         editor.putString("contact5",contact5.getText().toString());
+        editor.putString("message",message.getText().toString());
 
         editor.commit();
         startActivity(new Intent(this, MainActivity.class));
