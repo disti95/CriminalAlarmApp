@@ -2,4 +2,7 @@
     <string name="app_name">SendSMS2</string>
     <string name="myColor">#0000ff</string>
     <dimen name="txtSize">22sp</dimen>
+    <string name="title_activity_main2">Main2Activity</string>
+    <string name="title_activity_settings">SettingsActivity</string>
+    <string name="information">information</string>
 </resources>
