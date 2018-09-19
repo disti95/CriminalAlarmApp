@@ -59,20 +59,20 @@ public class MainActivity extends Activity implements LocationListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         sendSMSBtn = (Button) findViewById(R.id.sendSMSBtn);
-        //toPhoneNumberET = (EditText) findViewById(R.id.toPhoneNumberET);
-        //smsMessageET = (EditText) findViewById(R.id.smsMessageET);
-        sendSMSBtn.setOnClickListener(new View.OnClickListener() {
+
+
+        /*sendSMSBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 sendSMS();
             }
-        });
+        });*/
 
-        /*sendSMSBtn.setOnTouchListener(new View.OnTouchListener() {
+        sendSMSBtn.setOnTouchListener(new View.OnTouchListener() {
             public boolean onTouch(View v, MotionEvent event) {
                 touch(v, event);
                 return true;
             }
-        });*/
+        });
 
 
         configBtn = (Button) findViewById(R.id.configBtn);
@@ -139,116 +139,41 @@ public class MainActivity extends Activity implements LocationListener {
 
         switch(event.getAction()){
             case MotionEvent.ACTION_DOWN:
+
+                lastDown = System.currentTimeMillis()/1000;
                 break;
             case MotionEvent.ACTION_UP:
+                lastDuration = System.currentTimeMillis()/1000 - lastDown;
+                sendSMSNew();
                 break;
         }
 
-        /*final ArrayList currentNumbers=getNumbers();
+
+}
+
+    protected void sendSMSNew(){
+        final ArrayList currentNumbers=getNumbers();
         final String message = getMessage();
 
         if(IsActive){
-            if(event.getAction() == MotionEvent.ACTION_DOWN) {
-                lastDown = System.currentTimeMillis();
-            } else if (event.getAction() == MotionEvent.ACTION_UP) {
-                lastDuration = System.currentTimeMillis() - lastDown;
-            }
 
-            if(lastDuration > 5000){
+            if(lastDuration > 5){
                 stopThread = true;
                 IsActive = false;
-                GradientDrawable gradientDrawable = (GradientDrawable) sendSMSBtn.getBackground().mutate();
-                gradientDrawable.setColor(Color.RED);
-
-                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
-                    if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION)
-                            == PackageManager.PERMISSION_DENIED) {
-                        int a=1;
-
-                    }else{
-                        locationManager.removeUpdates(this);
-                    }
-                }
+                setAlarmButtonColor(Color.RED);
+                stopGPS();
 
             }else{
                 return;
             }
         }else{
 
+            setAlarmButtonColor(Color.GREEN);
+            startGPS();
+            createSendingThread(currentNumbers, message);
 
-            if (event.getAction() == MotionEvent.ACTION_UP){
-
-                GradientDrawable gradientDrawable = (GradientDrawable) sendSMSBtn.getBackground().mutate();
-                gradientDrawable.setColor(Color.GREEN);
-
-                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
-                    if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION)
-                            == PackageManager.PERMISSION_DENIED) {
-                        int a=1;
-
-                    }else{
-                        locationManager = (LocationManager)getSystemService(LOCATION_SERVICE);
-                        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
-                        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this);
-                    }
-                }
-
-
-
-
-
-
-                try{
-                    Thread thread = new Thread(new Runnable() {
-                        private ArrayList Numbers;
-                        private String Message;
-                        {
-                            this.Numbers = currentNumbers;
-                            this.Message = message;
-                        }
-                        @Override
-                        public void run() {
-
-                            try {
-                                IsActive = true;
-                                Thread.sleep(2000); //wait because of gps
-                                while(!stopThread) {
-
-                                    for (Object number : currentNumbers) {
-                                        DoSendStandartMessage(number.toString(), Message);
-                                        Thread.sleep(1500);
-                                        DoSendLocation(number.toString());
-                                        Thread.sleep(1000);
-
-                                    }
-                                    Thread.sleep(TIME_DELAY);
-                                }
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-
-                            }
-
-                        }
-                    }) {
-
-                    };
-
-                    stopThread = false;
-                    thread.start();
-                }catch(Exception ex){
-                    int a = 1;
-                    locationManager.removeUpdates(this);
-                }
-
-            }
-
-
-
-
-
-
-    }*/
-}
+        }
+    }
 
     protected void sendSMS() {
 
@@ -354,6 +279,81 @@ public class MainActivity extends Activity implements LocationListener {
 
 
     }
+
+    protected void setAlarmButtonColor(int id){
+        GradientDrawable gradientDrawable = (GradientDrawable) sendSMSBtn.getBackground().mutate();
+        gradientDrawable.setColor(id);
+    }
+
+    protected void startGPS(){
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+            if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+                    == PackageManager.PERMISSION_DENIED) {
+
+
+            }else{
+                locationManager = (LocationManager)getSystemService(LOCATION_SERVICE);
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+                locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this);
+            }
+        }
+    }
+
+    protected void stopGPS(){
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+            if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+                    == PackageManager.PERMISSION_DENIED) {
+
+
+            }else{
+                locationManager.removeUpdates(this);
+            }
+        }
+    }
+
+    protected void createSendingThread(final ArrayList currentNumbers, final String message){
+        try{
+            Thread thread = new Thread(new Runnable() {
+                private ArrayList Numbers;
+                private String Message;
+                {
+                    this.Numbers = currentNumbers;
+                    this.Message = message;
+                }
+                @Override
+                public void run() {
+
+                    try {
+                        IsActive = true;
+                        Thread.sleep(2000); //wait because of gps
+                        while(!stopThread) {
+
+                            for (Object number : currentNumbers) {
+                                DoSendStandartMessage(number.toString(), Message);
+                                Thread.sleep(1500);
+                                DoSendLocation(number.toString());
+                                Thread.sleep(1000);
+
+                            }
+                            Thread.sleep(TIME_DELAY);
+                        }
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+
+                    }
+
+                }
+            }) {
+
+            };
+
+            stopThread = false;
+            thread.start();
+        }catch(Exception ex){
+            stopGPS();
+        }
+    }
+
 
     public ArrayList<String> getNumbers() {
 
