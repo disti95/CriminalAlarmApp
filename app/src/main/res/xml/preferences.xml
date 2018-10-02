@@ -22,39 +22,45 @@
                     android:dialogTitle="test"
                     android:defaultValue="test"
                     />
+                <EditTextPreference
+                    android:key="message"
+                    android:title="message"
+                    android:summary="message"
+                    android:defaultValue="that's the default value of the message"
+                    />
         </PreferenceCategory>
 
         <PreferenceCategory
             android:title="contacts"
             android:key="contacts">
                 <EditTextPreference
-                    android:key="contact11"
-                    android:title="contact11"
-                    android:summary="contact11"
+                    android:key="contact1"
+                    android:title="contact1"
+                    android:summary="contact1"
                     android:defaultValue="empty"
                 />
                 <EditTextPreference
-                    android:key="contact22"
-                    android:title="contact22"
-                    android:summary="contact22"
+                    android:key="contact2"
+                    android:title="contact2"
+                    android:summary="contact2"
                     android:defaultValue="empty"
                     />
                 <EditTextPreference
-                    android:key="contact33"
-                    android:title="contact33"
-                    android:summary="contact33"
+                    android:key="contact3"
+                    android:title="contact3"
+                    android:summary="contact3"
                     android:defaultValue="empty"
                     />
                 <EditTextPreference
-                    android:key="contact44"
-                    android:title="contact44"
-                    android:summary="contact44"
+                    android:key="contact4"
+                    android:title="contact4"
+                    android:summary="contact4"
                     android:defaultValue="empty"
                     />
                 <EditTextPreference
-                    android:key="contact55"
-                    android:title="contact55"
-                    android:summary="contact55"
+                    android:key="contact5"
+                    android:title="contact5"
+                    android:summary="contact5"
                     android:defaultValue="empty"
                     />
         </PreferenceCategory>
