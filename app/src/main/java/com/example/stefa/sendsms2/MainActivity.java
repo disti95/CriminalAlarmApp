@@ -34,7 +34,7 @@ import java.util.Locale;
 
 public class MainActivity extends Activity implements LocationListener {
 
-    Button sendSMSBtn;
+    ImageButton sendSMSBtn;
     Button configBtn;
     EditText toPhoneNumberET;
     EditText smsMessageET;
@@ -58,7 +58,7 @@ public class MainActivity extends Activity implements LocationListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        sendSMSBtn = (Button) findViewById(R.id.sendSMSBtn);
+        sendSMSBtn = (ImageButton) findViewById(R.id.sendSMSBtn);
 
 
         /*sendSMSBtn.setOnClickListener(new View.OnClickListener() {

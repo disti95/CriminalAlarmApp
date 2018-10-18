@@ -2,7 +2,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical"
-    android:background="#40ebd4"
+    android:background="@drawable/dunklegasse"
     android:weightSum="1">
 
     <!--<TextView
@@ -49,8 +49,9 @@
         android:layout_height="78dp"
         android:text="Config"
         android:id="@+id/configBtn"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_toLeftOf="@+id/sendSMSBtn"
+        android:layout_toStartOf="@+id/sendSMSBtn"
+        android:visibility="gone" />
 
     <!--<ImageButton
         android:layout_width="250dp"
@@ -60,17 +61,30 @@
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/smsMessageET" /> -->
 
-     <Button
-         android:layout_width="250dp"
-         android:layout_height="250dp"
+     <!--<Button
+         android:layout_width="150dp"
+         android:layout_height="150dp"
          android:text="Help Me"
-         android:background="@drawable/circle"
+         android:background="@drawable/circle_danger"
          android:padding="15dp"
-         android:textColor="#fff"
+         android:textColor="#000"
          android:id="@+id/sendSMSBtn"
-
          android:layout_centerVertical="true"
-         android:layout_centerHorizontal="true" />
+         android:layout_centerHorizontal="true" />-->
+
+        <ImageButton
+            android:id="@+id/sendSMSBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="Green Tick Button"
+            android:background="@drawable/circle_danger"
+            android:src="@drawable/mapperson"
+            android:minHeight="140dp"
+            android:minWidth="140dp"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true" />
+
+
 
 
 
