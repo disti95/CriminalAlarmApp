@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+        <PreferenceCategory
+            android:title="common settings"
+            android:key="commonsettings">
+                <ListPreference
+                    android:dependency="interval"
+                    android:key="interval"
+                    android:title="interval setting"
+                    android:entries="@array/interval"
+                    android:entryValues="@array/interval"
+                    android:dialogTitle="test"
+                    android:defaultValue="test"
+                    />
+                <ListPreference
+                    android:dependency="light"
+                    android:key="light"
+                    android:title="Light"
+                    android:summary="Activate Light while alarm is active"
+                    android:entries="@array/bool"
+                    android:entryValues="@array/bool"
+                    android:dialogTitle="test"
+                    android:defaultValue="test"
+                    />
+        </PreferenceCategory>
+
+        <PreferenceCategory
+            android:title="contacts"
+            android:key="contacts">
+                <EditTextPreference
+                    android:key="contact11"
+                    android:title="contact11"
+                    android:summary="contact11"
+                    android:defaultValue="empty"
+                />
+                <EditTextPreference
+                    android:key="contact22"
+                    android:title="contact22"
+                    android:summary="contact22"
+                    android:defaultValue="empty"
+                    />
+                <EditTextPreference
+                    android:key="contact33"
+                    android:title="contact33"
+                    android:summary="contact33"
+                    android:defaultValue="empty"
+                    />
+                <EditTextPreference
+                    android:key="contact44"
+                    android:title="contact44"
+                    android:summary="contact44"
+                    android:defaultValue="empty"
+                    />
+                <EditTextPreference
+                    android:key="contact55"
+                    android:title="contact55"
+                    android:summary="contact55"
+                    android:defaultValue="empty"
+                    />
+        </PreferenceCategory>
+    <!--<CheckBoxPreference-->
+        <!--android:key="contact1"-->
+        <!--android:title="@string/pref_sync"-->
+        <!--android:summary="@string/pref_sync_summ"-->
+        <!--android:defaultValue="true" />-->
+
+
+
+</PreferenceScreen>

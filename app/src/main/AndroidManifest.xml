@@ -25,20 +25,9 @@
         <activity
             android:name=".ConfigActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".AlarmActivity" >
-            <intent-filter>
-                <!--<action android:name="android.intent.action.MAIN" />-->
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity android:name=".SettingsActivity">
-            <intent-filter>
-                <!--<action android:name="android.intent.action.MAIN" />-->
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        <activity
+            android:name=".PreferencesActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

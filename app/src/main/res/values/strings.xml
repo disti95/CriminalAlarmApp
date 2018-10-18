@@ -5,4 +5,14 @@
     <string name="title_activity_main2">Main2Activity</string>
     <string name="title_activity_settings">SettingsActivity</string>
     <string name="information">information</string>
+    <string-array name="interval">
+        <item>"30 seconds"</item>
+        <item>"1 minute"</item>
+        <item>"2 minutes"</item>
+        <item>"3 minutes"</item>
+    </string-array>
+    <string-array name="bool">
+        <item>"on"</item>
+        <item>"off"</item>
+    </string-array>
 </resources>
