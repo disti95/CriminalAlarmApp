@@ -36,11 +36,6 @@ public class MainActivity extends Activity implements LocationListener {
     EditText smsMessageET;
     Double currentLattitude, currentLongitude;
     String GlobalToPhoneNumber;
-    EditText contact1;
-    EditText contact2;
-    EditText contact3;
-    EditText contact4;
-    EditText contact5;
     LocationManager locationManager;
     long lastDown;
     long lastDuration;
@@ -355,11 +350,6 @@ public class MainActivity extends Activity implements LocationListener {
 
         ArrayList<String> numbers = new ArrayList<String>();
 
-        contact1 = (EditText) findViewById(R.id.Contact1);
-        contact2 = (EditText) findViewById(R.id.Contact2);
-        contact3 = (EditText) findViewById(R.id.Contact3);
-        contact4 = (EditText) findViewById(R.id.Contact4);
-        contact5 = (EditText) findViewById(R.id.Contact5);
         SharedPreferences sharedPreferences= PreferenceManager.getDefaultSharedPreferences(this);
         String number1=sharedPreferences.getString("contact1", "Default");
         if(!number1.isEmpty()){
