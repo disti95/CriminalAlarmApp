@@ -2,28 +2,24 @@ package com.example.stefa.sendsms2;
 
 import android.Manifest;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
-import android.graphics.drawable.StateListDrawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnTouchListener;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -40,11 +36,6 @@ public class MainActivity extends Activity implements LocationListener {
     EditText smsMessageET;
     Double currentLattitude, currentLongitude;
     String GlobalToPhoneNumber;
-    EditText contact1;
-    EditText contact2;
-    EditText contact3;
-    EditText contact4;
-    EditText contact5;
     LocationManager locationManager;
     long lastDown;
     long lastDuration;
@@ -359,12 +350,7 @@ public class MainActivity extends Activity implements LocationListener {
 
         ArrayList<String> numbers = new ArrayList<String>();
 
-        contact1 = (EditText) findViewById(R.id.Contact1);
-        contact2 = (EditText) findViewById(R.id.Contact2);
-        contact3 = (EditText) findViewById(R.id.Contact3);
-        contact4 = (EditText) findViewById(R.id.Contact4);
-        contact5 = (EditText) findViewById(R.id.Contact5);
-        SharedPreferences sharedPreferences= this.getSharedPreferences("gameSetting", Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences= PreferenceManager.getDefaultSharedPreferences(this);
         String number1=sharedPreferences.getString("contact1", "Default");
         if(!number1.isEmpty()){
             numbers.add(number1);
@@ -389,7 +375,7 @@ public class MainActivity extends Activity implements LocationListener {
     }
 
     public String getMessage() {
-        SharedPreferences sharedPreferences= this.getSharedPreferences("gameSetting", Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences= PreferenceManager.getDefaultSharedPreferences(this);
         String message=sharedPreferences.getString("message", "Default");
         if(!message.isEmpty()){
             return message;
@@ -492,7 +478,7 @@ public class MainActivity extends Activity implements LocationListener {
     }
 
     protected void showConfig() {
-        startActivity(new Intent(this, ConfigActivity.class));
+        startActivity(new Intent(this, PreferencesActivity.class));
     }
 
     @Override
