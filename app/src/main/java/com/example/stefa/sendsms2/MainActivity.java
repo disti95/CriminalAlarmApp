@@ -20,6 +20,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -31,7 +32,7 @@ import java.util.Locale;
 public class MainActivity extends Activity implements LocationListener {
 
     ImageButton sendSMSBtn;
-    Button configBtn;
+    ImageButton configBtn;
     EditText toPhoneNumberET;
     EditText smsMessageET;
     Double currentLattitude, currentLongitude;
@@ -66,7 +67,7 @@ public class MainActivity extends Activity implements LocationListener {
         });
 
 
-        configBtn = (Button) findViewById(R.id.configBtn);
+        configBtn = (ImageButton) findViewById(R.id.configBtn);
         configBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 showConfig();
