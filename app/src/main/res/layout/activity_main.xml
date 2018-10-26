@@ -62,28 +62,39 @@
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/smsMessageET" /> -->
 
-     <!--<Button
-         android:layout_width="150dp"
-         android:layout_height="150dp"
-         android:text="Help Me"
-         android:background="@drawable/circle_danger"
-         android:padding="15dp"
-         android:textColor="#000"
-         android:id="@+id/sendSMSBtn"
-         android:layout_centerVertical="true"
-         android:layout_centerHorizontal="true" />-->
+     <!--<Button-->
+         <!--android:layout_width="150dp"-->
+         <!--android:layout_height="150dp"-->
+         <!--android:text="Help Me"-->
+         <!--android:background="@drawable/circle_danger"-->
+         <!--android:padding="15dp"-->
+         <!--android:textColor="#000"-->
+         <!--android:id="@+id/sendSMSBtn"-->
+         <!--android:layout_centerVertical="true"-->
+         <!--android:layout_centerHorizontal="true" />-->
 
-        <ImageButton
-            android:id="@+id/sendSMSBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:contentDescription="Green Tick Button"
-            android:background="@drawable/circle_danger"
-            android:src="@drawable/mapperson"
-            android:minHeight="140dp"
-            android:minWidth="140dp"
-            android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true" />
+    <Button
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:text="Help Me"
+        android:background="@drawable/circle"
+        android:padding="15dp"
+        android:textColor="#fff"
+        android:id="@+id/sendSMSBtn"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
+
+        <!--<ImageButton-->
+            <!--android:id="@+id/sendSMSBtn"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:contentDescription="Green Tick Button"-->
+            <!--android:background="@drawable/circle_danger"-->
+            <!--android:src="@drawable/mapperson"-->
+            <!--android:minHeight="140dp"-->
+            <!--android:minWidth="140dp"-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:layout_centerHorizontal="true" />-->
 
     <ImageButton
         android:id="@+id/configBtn"

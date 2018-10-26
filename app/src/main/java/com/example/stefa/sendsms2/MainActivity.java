@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.LayerDrawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -31,7 +32,7 @@ import java.util.Locale;
 
 public class MainActivity extends Activity implements LocationListener {
 
-    ImageButton sendSMSBtn;
+    Button sendSMSBtn;
     ImageButton configBtn;
     EditText toPhoneNumberET;
     EditText smsMessageET;
@@ -50,7 +51,7 @@ public class MainActivity extends Activity implements LocationListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        sendSMSBtn = (ImageButton) findViewById(R.id.sendSMSBtn);
+        sendSMSBtn = (Button) findViewById(R.id.sendSMSBtn);
 
 
         /*sendSMSBtn.setOnClickListener(new View.OnClickListener() {
@@ -160,6 +161,7 @@ public class MainActivity extends Activity implements LocationListener {
             }
         }else{
 
+            //sendSMSBtn.setBackgroundColor(Color.GREEN);
             setAlarmButtonColor(Color.GREEN);
             startGPS();
             createSendingThread(currentNumbers, message);
@@ -273,8 +275,12 @@ public class MainActivity extends Activity implements LocationListener {
     }
 
     protected void setAlarmButtonColor(int id){
-        GradientDrawable gradientDrawable = (GradientDrawable) sendSMSBtn.getBackground().mutate();
-        gradientDrawable.setColor(id);
+        try {
+            GradientDrawable gradientDrawable = (GradientDrawable) sendSMSBtn.getBackground().mutate();
+            gradientDrawable.setColor(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     protected void startGPS(){
@@ -317,7 +323,7 @@ public class MainActivity extends Activity implements LocationListener {
 
                     try {
                         IsActive = true;
-                        Thread.sleep(2000); //wait because of gps
+                        Thread.sleep(5000); //wait because of gps
                         while(!stopThread) {
 
                             for (Object number : currentNumbers) {
