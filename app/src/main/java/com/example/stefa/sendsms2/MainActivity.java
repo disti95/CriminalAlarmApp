@@ -169,110 +169,86 @@ public class MainActivity extends Activity implements LocationListener {
         }
     }
 
-    protected void sendSMS() {
-
-
-    final ArrayList currentNumbers=getNumbers();
-    final String message = getMessage();
-
-    if(IsActive){
-
-        stopThread = true;
-        IsActive = false;
-        GradientDrawable gradientDrawable = (GradientDrawable) sendSMSBtn.getBackground().mutate();
-        gradientDrawable.setColor(Color.RED);
-        locationManager.removeUpdates(this);
-    }else{
-
-        //sendSMSBtn.setBackgroundColor(Color.GREEN);
-
-        GradientDrawable gradientDrawable = (GradientDrawable) sendSMSBtn.getBackground().mutate();
-        gradientDrawable.setColor(Color.GREEN);
-
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
-            if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION)
-                    == PackageManager.PERMISSION_DENIED) {
-                    int a=1;
-
-            }else{
-                locationManager = (LocationManager)getSystemService(LOCATION_SERVICE);
-                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
-                locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this);
-            }
-        }
-
-
-
-
-
-
-        try{
-            Thread thread = new Thread(new Runnable() {
-                private ArrayList Numbers;
-                private String Message;
-                {
-                    this.Numbers = currentNumbers;
-                    this.Message = message;
-                }
-                @Override
-                public void run() {
-
-                    try {
-                        IsActive = true;
-                        Thread.sleep(2000); //wait because of gps
-                        while(!stopThread) {
-
-                            for (Object number : currentNumbers) {
-                                DoSendStandartMessage(number.toString(), Message);
-                                Thread.sleep(1500);
-                                DoSendLocation(number.toString());
-                                Thread.sleep(1000);
-
-                            }
-                            Thread.sleep(TIME_DELAY);
-                        }
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-
-                    }
-
-                }
-            }) {
-               /* @Override
-                public void run() {
-                    try {
-                        IsActive = true;
-                        while(!stopThread) {
-
-                            //for (String number : currentNumbers) {
-                            DoSendStandartMessage();
-                            sleep(2000);
-                            DoSendLocation();
-                            sleep(TIME_DELAY);
-                        }
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }*/
-            };
-
-            stopThread = false;
-            thread.start();
-        }catch(Exception ex){
-            int a = 1;
-            locationManager.removeUpdates(this);
-        }
-
-
-    }
-
-
-
-
-
-
-
-    }
+//    protected void sendSMS() {
+//
+//
+//    final ArrayList currentNumbers=getNumbers();
+//    final String message = getMessage();
+//
+//    if(IsActive){
+//
+//        stopThread = true;
+//        IsActive = false;
+//        GradientDrawable gradientDrawable = (GradientDrawable) sendSMSBtn.getBackground().mutate();
+//        gradientDrawable.setColor(Color.RED);
+//        locationManager.removeUpdates(this);
+//    }else{
+//
+//        //sendSMSBtn.setBackgroundColor(Color.GREEN);
+//
+//        GradientDrawable gradientDrawable = (GradientDrawable) sendSMSBtn.getBackground().mutate();
+//        gradientDrawable.setColor(Color.GREEN);
+//
+//        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+//            if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+//                    == PackageManager.PERMISSION_DENIED) {
+//                    int a=1;
+//
+//            }else{
+//                locationManager = (LocationManager)getSystemService(LOCATION_SERVICE);
+//                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+//                locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this);
+//            }
+//        }
+//
+//
+//
+//
+//
+//
+//        try{
+//            Thread thread = new Thread(new Runnable() {
+//                private ArrayList Numbers;
+//                private String Message;
+//                {
+//                    this.Numbers = currentNumbers;
+//                    this.Message = message;
+//                }
+//                @Override
+//                public void run() {
+//
+//                    try {
+//                        IsActive = true;
+//                        Thread.sleep(2000); //wait because of gps
+//                        while(!stopThread) {
+//
+//                            for (Object number : currentNumbers) {
+//                                DoSendStandartMessage(number.toString(), Message);
+//                                Thread.sleep(1500);
+//                                DoSendLocation(number.toString());
+//                                Thread.sleep(1000);
+//
+//                            }
+//                            Thread.sleep(TIME_DELAY);
+//                        }
+//                    } catch (InterruptedException e) {
+//                        e.printStackTrace();
+//
+//                    }
+//
+//                }
+//            });
+//
+//            stopThread = false;
+//            thread.start();
+//        }catch(Exception ex){
+//            int a = 1;
+//            locationManager.removeUpdates(this);
+//        }
+//
+//
+//    }
+//}
 
     protected void setAlarmButtonColor(){
         try {
