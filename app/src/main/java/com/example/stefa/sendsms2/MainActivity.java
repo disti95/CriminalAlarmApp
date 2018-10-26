@@ -7,7 +7,6 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
-import android.graphics.drawable.LayerDrawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -19,7 +18,6 @@ import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
@@ -32,7 +30,7 @@ import java.util.Locale;
 
 public class MainActivity extends Activity implements LocationListener {
 
-    Button sendSMSBtn;
+    ImageButton sendSMSBtn;
     ImageButton configBtn;
     EditText toPhoneNumberET;
     EditText smsMessageET;
@@ -51,7 +49,7 @@ public class MainActivity extends Activity implements LocationListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        sendSMSBtn = (Button) findViewById(R.id.sendSMSBtn);
+        sendSMSBtn = (ImageButton) findViewById(R.id.sendSMSBtn);
 
 
         /*sendSMSBtn.setOnClickListener(new View.OnClickListener() {
@@ -153,7 +151,9 @@ public class MainActivity extends Activity implements LocationListener {
             if(lastDuration > 5){
                 stopThread = true;
                 IsActive = false;
-                setAlarmButtonColor(Color.RED);
+                ImageButton btn = (ImageButton) findViewById(R.id.sendSMSBtn);
+                btn.setBackgroundResource(R.drawable.circle_danger);
+                //setAlarmButtonColor(Color.RED);
                 stopGPS();
 
             }else{
@@ -162,7 +162,7 @@ public class MainActivity extends Activity implements LocationListener {
         }else{
 
             //sendSMSBtn.setBackgroundColor(Color.GREEN);
-            setAlarmButtonColor(Color.GREEN);
+            setAlarmButtonColor();
             startGPS();
             createSendingThread(currentNumbers, message);
 
@@ -274,10 +274,12 @@ public class MainActivity extends Activity implements LocationListener {
 
     }
 
-    protected void setAlarmButtonColor(int id){
+    protected void setAlarmButtonColor(){
         try {
-            GradientDrawable gradientDrawable = (GradientDrawable) sendSMSBtn.getBackground().mutate();
-            gradientDrawable.setColor(id);
+//            GradientDrawable gradientDrawable = (GradientDrawable) sendSMSBtn.getBackground().mutate();
+//            gradientDrawable.setColor(id);
+            ImageButton btn = (ImageButton) findViewById(R.id.sendSMSBtn);
+            btn.setBackgroundResource(R.drawable.circle_danger_green);
         } catch (Exception e) {
             e.printStackTrace();
         }
