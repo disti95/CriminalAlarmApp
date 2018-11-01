@@ -8,9 +8,9 @@
                     android:key="interval"
                     android:title="interval setting"
                     android:entries="@array/interval"
-                    android:entryValues="@array/interval"
-                    android:dialogTitle="test"
-                    android:defaultValue="test"
+                    android:entryValues="@array/interval_values"
+                    android:dialogTitle="Interval settings"
+                    android:defaultValue="30000"
                     />
                 <ListPreference
                     android:dependency="light"
@@ -18,15 +18,29 @@
                     android:title="Light"
                     android:summary="Activate Light while alarm is active"
                     android:entries="@array/bool"
-                    android:entryValues="@array/bool"
-                    android:dialogTitle="test"
-                    android:defaultValue="test"
+                    android:entryValues="@array/bool_values"
+                    android:dialogTitle="Turn on Light while sending"
+                    />
+                <ListPreference
+                    android:dependency="alarm"
+                    android:key="alarm"
+                    android:title="alarm"
+                    android:summary=""
+                    android:entries="@array/bool"
+                    android:entryValues="@array/bool_values"
+                    android:dialogTitle=""
                     />
                 <EditTextPreference
                     android:key="message"
                     android:title="message"
                     android:summary="message"
-                    android:defaultValue="that's the default value of the message"
+                    android:defaultValue=""
+                    />
+                <EditTextPreference
+                    android:key="code"
+                    android:title="code"
+                    android:summary="code"
+                    android:defaultValue=""
                     />
         </PreferenceCategory>
 

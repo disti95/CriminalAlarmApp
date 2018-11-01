@@ -18,6 +18,7 @@ import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
@@ -50,6 +51,30 @@ public class MainActivity extends Activity implements LocationListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         sendSMSBtn = (ImageButton) findViewById(R.id.sendSMSBtn);
+
+
+        /////////////////////////////////
+        //TODO: Remove this before merge
+        Button testbutton = (Button) findViewById(R.id.button);
+
+        testbutton.setOnTouchListener(new View.OnTouchListener() {
+            public boolean onTouch(View v, MotionEvent event) {
+                EditText textField = (EditText) findViewById(R.id.editText);
+
+                SharedPreferences sharedPreferences= PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+                String interval=sharedPreferences.getString("interval", "Default");
+                String light=sharedPreferences.getString("light", "Default");
+
+                textField.setTextColor(Color.RED);
+                textField.setText("interval: "+interval + "light: "+light);
+                return true;
+            }
+        });
+
+
+
+
+        ///////////////////////////////
 
 
         /*sendSMSBtn.setOnClickListener(new View.OnClickListener() {
