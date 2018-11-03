@@ -1,16 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
         <PreferenceCategory
-            android:title="common settings"
+            android:title="Settings"
             android:key="commonsettings">
                 <ListPreference
                     android:dependency="interval"
                     android:key="interval"
-                    android:title="interval setting"
+                    android:title="Interval setting"
                     android:entries="@array/interval"
-                    android:entryValues="@array/interval"
-                    android:dialogTitle="test"
-                    android:defaultValue="test"
+                    android:entryValues="@array/interval_values"
+                    android:dialogTitle="Interval settings"
+                    android:defaultValue="30000"
+                    />
+                <ListPreference
+                    android:dependency="auto_off"
+                    android:key="auto_off"
+                    android:title="Auto off"
+                    android:entries="@array/auto_off"
+                    android:entryValues="@array/auto_off_values"
+                    android:dialogTitle="Auto turn off tracking"
+                    android:defaultValue="300000"
                     />
                 <ListPreference
                     android:dependency="light"
@@ -18,48 +27,62 @@
                     android:title="Light"
                     android:summary="Activate Light while alarm is active"
                     android:entries="@array/bool"
-                    android:entryValues="@array/bool"
-                    android:dialogTitle="test"
-                    android:defaultValue="test"
+                    android:entryValues="@array/bool_values"
+                    android:dialogTitle="Turn on Light while sending"
+                    />
+                <ListPreference
+                    android:dependency="alarm"
+                    android:key="alarm"
+                    android:title="Alarm"
+                    android:summary=""
+                    android:entries="@array/bool"
+                    android:entryValues="@array/bool_values"
+                    android:dialogTitle=""
                     />
                 <EditTextPreference
                     android:key="message"
-                    android:title="message"
+                    android:title="Message"
                     android:summary="message"
-                    android:defaultValue="that's the default value of the message"
+                    android:defaultValue="Help me I'm in danger"
                     />
+                <!--<EditTextPreference-->
+                    <!--android:key="code"-->
+                    <!--android:title="Code"-->
+                    <!--android:summary="code"-->
+                    <!--android:defaultValue=""-->
+                    <!--/>-->
         </PreferenceCategory>
 
         <PreferenceCategory
-            android:title="contacts"
+            android:title="Contacts"
             android:key="contacts">
                 <EditTextPreference
                     android:key="contact1"
-                    android:title="contact1"
+                    android:title="Contact 1"
                     android:summary="contact1"
                     android:defaultValue=""
                 />
                 <EditTextPreference
                     android:key="contact2"
-                    android:title="contact2"
+                    android:title="Contact 2"
                     android:summary="contact2"
                     android:defaultValue=""
                     />
                 <EditTextPreference
                     android:key="contact3"
-                    android:title="contact3"
+                    android:title="Contact 3"
                     android:summary="contact3"
                     android:defaultValue=""
                     />
                 <EditTextPreference
                     android:key="contact4"
-                    android:title="contact4"
+                    android:title="Contact 4"
                     android:summary="contact4"
                     android:defaultValue=""
                     />
                 <EditTextPreference
                     android:key="contact5"
-                    android:title="contact5"
+                    android:title="Contact 5"
                     android:summary="contact5"
                     android:defaultValue=""
                     />
