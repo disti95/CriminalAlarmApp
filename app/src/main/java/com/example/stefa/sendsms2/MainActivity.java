@@ -43,6 +43,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 
 public class MainActivity extends Activity implements LocationListener {
 
+    //Test
     ImageButton sendSMSBtn;
     ImageButton configBtn;
     EditText toPhoneNumberET;
