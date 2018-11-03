@@ -2,18 +2,26 @@ package com.example.stefa.sendsms2;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
+import android.hardware.camera2.CameraAccessException;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -27,6 +35,11 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import android.hardware.camera2.CameraManager;
+
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.common.api.GoogleApiClient;
 
 public class MainActivity extends Activity implements LocationListener {
 
@@ -44,6 +57,9 @@ public class MainActivity extends Activity implements LocationListener {
     public static boolean stopService = false;
     public static boolean IsActive = false;
     public static int TIME_DELAY = 20000;
+    public boolean flashLightStatus = false;
+    private static final int CAMERA_REQUEST = 50;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,7 +90,7 @@ public class MainActivity extends Activity implements LocationListener {
         });
 
         int PERMISSION_REQUEST_CODE = 1;
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 
             if (checkSelfPermission(Manifest.permission.SEND_SMS)
                     == PackageManager.PERMISSION_DENIED) {
@@ -115,8 +131,25 @@ public class MainActivity extends Activity implements LocationListener {
                 requestPermissions(permissions, PERMISSION_REQUEST_CODE);
 
             }
-        }
 
+            if (checkSelfPermission(Manifest.permission.CAMERA)
+                    == PackageManager.PERMISSION_DENIED){
+                final boolean hasCameraFlash = getPackageManager().
+                        hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH);
+
+                Log.d("permission", "permission denied to INTERNET - requesting it");
+                String[] permissions = {Manifest.permission.CAMERA};
+
+                requestPermissions(permissions, PERMISSION_REQUEST_CODE);
+            }
+
+//            final boolean hasCameraFlash = getPackageManager().
+//                    hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH);
+//            boolean isEnabled = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+//                    == PackageManager.PERMISSION_GRANTED;
+
+
+        }
 
 
 
@@ -124,133 +157,109 @@ public class MainActivity extends Activity implements LocationListener {
 
     public void touch(View v, MotionEvent event) {
 
-        Integer a=event.getAction();
+        Integer a = event.getAction();
         Log.d("myTag", "Beginn");
         Log.d("myTag", (a.toString()));
 
-        switch(event.getAction()){
+        switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
 
-                lastDown = System.currentTimeMillis()/1000;
+                lastDown = System.currentTimeMillis() / 1000;
                 break;
             case MotionEvent.ACTION_UP:
-                lastDuration = System.currentTimeMillis()/1000 - lastDown;
+                lastDuration = System.currentTimeMillis() / 1000 - lastDown;
                 sendSMSNew();
                 break;
         }
 
 
-}
+    }
 
-    protected void sendSMSNew(){
-        final ArrayList currentNumbers=getNumbers();
-        final String message = getMessage();
+    protected void sendSMSNew() {
 
-        if(IsActive){
+        ConfigParameters settings = new ConfigParameters(this);
 
-            if(lastDuration > 5){
+        if(settings.Message == null){
+
+            CreateMessage("Error", "Please enter a message in the settings.");
+            return;
+        }
+
+//        if(settings.Contacts[0] == null){
+//
+//        }
+//        final ArrayList currentNumbers = getNumbers();
+//        final String message = getMessage();
+
+        if (IsActive) {
+
+            if (lastDuration > 5) {
                 stopThread = true;
                 IsActive = false;
+
+                configBtn.setClickable(true);
+                configBtn.setEnabled(true);
                 ImageButton btn = (ImageButton) findViewById(R.id.sendSMSBtn);
                 btn.setBackgroundResource(R.drawable.circle_danger);
                 //setAlarmButtonColor(Color.RED);
                 stopGPS();
+                flashLightOff();
 
-            }else{
+            } else {
                 return;
             }
-        }else{
+        } else {
 
+            flashLightOn();
             //sendSMSBtn.setBackgroundColor(Color.GREEN);
+            configBtn.setClickable(false);
+            configBtn.setEnabled(false);
             setAlarmButtonColor();
             startGPS();
-            createSendingThread(currentNumbers, message);
+            createSendingThread(settings);
 
         }
     }
 
-//    protected void sendSMS() {
-//
-//
-//    final ArrayList currentNumbers=getNumbers();
-//    final String message = getMessage();
-//
-//    if(IsActive){
-//
-//        stopThread = true;
-//        IsActive = false;
-//        GradientDrawable gradientDrawable = (GradientDrawable) sendSMSBtn.getBackground().mutate();
-//        gradientDrawable.setColor(Color.RED);
-//        locationManager.removeUpdates(this);
-//    }else{
-//
-//        //sendSMSBtn.setBackgroundColor(Color.GREEN);
-//
-//        GradientDrawable gradientDrawable = (GradientDrawable) sendSMSBtn.getBackground().mutate();
-//        gradientDrawable.setColor(Color.GREEN);
-//
-//        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
-//            if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION)
-//                    == PackageManager.PERMISSION_DENIED) {
-//                    int a=1;
-//
-//            }else{
-//                locationManager = (LocationManager)getSystemService(LOCATION_SERVICE);
-//                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
-//                locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this);
-//            }
-//        }
-//
-//
-//
-//
-//
-//
-//        try{
-//            Thread thread = new Thread(new Runnable() {
-//                private ArrayList Numbers;
-//                private String Message;
-//                {
-//                    this.Numbers = currentNumbers;
-//                    this.Message = message;
-//                }
-//                @Override
-//                public void run() {
-//
-//                    try {
-//                        IsActive = true;
-//                        Thread.sleep(2000); //wait because of gps
-//                        while(!stopThread) {
-//
-//                            for (Object number : currentNumbers) {
-//                                DoSendStandartMessage(number.toString(), Message);
-//                                Thread.sleep(1500);
-//                                DoSendLocation(number.toString());
-//                                Thread.sleep(1000);
-//
-//                            }
-//                            Thread.sleep(TIME_DELAY);
-//                        }
-//                    } catch (InterruptedException e) {
-//                        e.printStackTrace();
-//
-//                    }
-//
-//                }
-//            });
-//
-//            stopThread = false;
-//            thread.start();
-//        }catch(Exception ex){
-//            int a = 1;
-//            locationManager.removeUpdates(this);
-//        }
-//
-//
-//    }
-//}
+    private void CreateMessage(String title, String message){
+        AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
+        alertDialog.setTitle(title);
+        alertDialog.setMessage(message);
+        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+        alertDialog.show();
+    }
 
-    protected void setAlarmButtonColor(){
+
+    private void flashLightOn() {
+        CameraManager cameraManager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
+
+        try {
+            String cameraId = cameraManager.getCameraIdList()[0];
+            cameraManager.setTorchMode(cameraId, true);
+            flashLightStatus = true;
+        } catch (CameraAccessException e) {
+            int a=1;
+        }
+    }
+
+    private void flashLightOff() {
+        CameraManager cameraManager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
+
+        try {
+            String cameraId = cameraManager.getCameraIdList()[0];
+            cameraManager.setTorchMode(cameraId, false);
+            flashLightStatus = false;
+        } catch (CameraAccessException e) {
+            int a=1;
+        }
+    }
+
+    protected void setAlarmButtonColor() {
         try {
 //            GradientDrawable gradientDrawable = (GradientDrawable) sendSMSBtn.getBackground().mutate();
 //            gradientDrawable.setColor(id);
@@ -261,51 +270,55 @@ public class MainActivity extends Activity implements LocationListener {
         }
     }
 
-    protected void startGPS(){
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+    protected void startGPS() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION)
                     == PackageManager.PERMISSION_DENIED) {
 
 
-            }else{
-                locationManager = (LocationManager)getSystemService(LOCATION_SERVICE);
+            } else {
+                locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
                 locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
                 locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this);
             }
         }
     }
 
-    protected void stopGPS(){
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+    protected void stopGPS() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION)
                     == PackageManager.PERMISSION_DENIED) {
 
 
-            }else{
+            } else {
                 locationManager.removeUpdates(this);
             }
         }
     }
 
-    protected void createSendingThread(final ArrayList currentNumbers, final String message){
-        try{
+    protected void createSendingThread(final ConfigParameters settings) {
+        try {
             Thread thread = new Thread(new Runnable() {
-                private ArrayList Numbers;
-                private String Message;
+                private ConfigParameters alarmSettings;
+
+                //                private ArrayList Numbers;
+//                private String Message;
                 {
-                    this.Numbers = currentNumbers;
-                    this.Message = message;
+//                    this.Numbers = currentNumbers;
+//                    this.Message = message;
+                    this.alarmSettings = settings;
                 }
+
                 @Override
                 public void run() {
 
                     try {
                         IsActive = true;
                         Thread.sleep(5000); //wait because of gps
-                        while(!stopThread) {
+                        while (!stopThread) {
 
-                            for (Object number : currentNumbers) {
-                                DoSendStandartMessage(number.toString(), Message);
+                            for (Object number : alarmSettings.Contacts) {
+                                DoSendStandartMessage(number.toString(), alarmSettings.Message);
                                 Thread.sleep(1500);
                                 DoSendLocation(number.toString());
                                 Thread.sleep(1000);
@@ -325,7 +338,7 @@ public class MainActivity extends Activity implements LocationListener {
 
             stopThread = false;
             thread.start();
-        }catch(Exception ex){
+        } catch (Exception ex) {
             stopGPS();
         }
     }
@@ -335,104 +348,52 @@ public class MainActivity extends Activity implements LocationListener {
 
         ArrayList<String> numbers = new ArrayList<String>();
 
-        SharedPreferences sharedPreferences= PreferenceManager.getDefaultSharedPreferences(this);
-        String number1=sharedPreferences.getString("contact1", "Default");
-        if(!number1.isEmpty()){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String number1 = sharedPreferences.getString("contact1", "Default");
+        if (!number1.isEmpty()) {
             numbers.add(number1);
         }
-        String number2=sharedPreferences.getString("contact2", "Default");
-        if(!number2.isEmpty()){
+        String number2 = sharedPreferences.getString("contact2", "Default");
+        if (!number2.isEmpty()) {
             numbers.add(number2);
         }
-        String number3=sharedPreferences.getString("contact3", "Default");
-        if(!number3.isEmpty()){
+        String number3 = sharedPreferences.getString("contact3", "Default");
+        if (!number3.isEmpty()) {
             numbers.add(number3);
         }
-        String number4=sharedPreferences.getString("contact4", "Default");
-        if(!number4.isEmpty()){
+        String number4 = sharedPreferences.getString("contact4", "Default");
+        if (!number4.isEmpty()) {
             numbers.add(number4);
         }
-        String number5=sharedPreferences.getString("contact5", "Default");
-        if(!number5.isEmpty()){
+        String number5 = sharedPreferences.getString("contact5", "Default");
+        if (!number5.isEmpty()) {
             numbers.add(number5);
         }
         return numbers;
     }
 
     public String getMessage() {
-        SharedPreferences sharedPreferences= PreferenceManager.getDefaultSharedPreferences(this);
-        String message=sharedPreferences.getString("message", "Default");
-        if(!message.isEmpty()){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String message = sharedPreferences.getString("message", "Default");
+        if (!message.isEmpty()) {
             return message;
         }
 
         return null;
     }
 
-    public void DoSendStandartMessage(String currentNumber, String message){
+    public void DoSendStandartMessage(String currentNumber, String message) {
         //String toPhoneNumber = toPhoneNumberET.getText().toString();
         //String smsMessage = smsMessageET.getText().toString();
         Date currentTime = Calendar.getInstance().getTime();
         Geocoder geocoder;
         List<Address> addresses;
         geocoder = new Geocoder(this, Locale.getDefault());
-        String googleMapsHeader="https://maps.google.com/?q=";
+        String googleMapsHeader = "https://maps.google.com/?q=";
 
         try {
 
-         if(currentLattitude == null || currentLongitude == null){
-
-             stopThread = true;
-             GradientDrawable gradientDrawable = (GradientDrawable) sendSMSBtn.getBackground().mutate();
-             gradientDrawable.setColor(Color.RED);
-             Toast.makeText(getApplicationContext(),
-                     "No gps values!",
-                     Toast.LENGTH_LONG).show();
-         }else{
-
-             addresses = geocoder.getFromLocation(currentLattitude, currentLongitude, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
-             String address = addresses.get(0).getAddressLine(0);
-             message = message + " \nZeitpunkt: " + currentTime.toString()
-                     + " \nLängengrad: " + currentLongitude.toString()
-                     + " \nBreitengrad: " + currentLattitude.toString()
-                     + " \nAdresse: " + address;
-             //+ " \nLink: " + googleMapsHeader + address.replace(" ", "");
-
-             //}
-
-             // message can have only 160 characters
-             SmsManager smsManager = SmsManager.getDefault();
-             ArrayList<String> parts = smsManager.divideMessage(message);
-             smsManager.sendMultipartTextMessage(currentNumber, null, parts, null, null);
-
-             //SystemClock.sleep(1000);
-         }
-
-
-
-
-
-
-    } catch (Exception e) {
-        Toast.makeText(getApplicationContext(),
-                "Sending SMS failed.",
-                Toast.LENGTH_LONG).show();
-        e.printStackTrace();
-    }
-
-    }
-
-    public void DoSendLocation(String currentNumber){
-        // toPhoneNumber = toPhoneNumberET.getText().toString();
-        Date currentTime = Calendar.getInstance().getTime();
-        Geocoder geocoder;
-        List<Address> addresses;
-        geocoder = new Geocoder(this, Locale.getDefault());
-        String googleMapsHeader="https://maps.google.com/?q=";
-
-        try{
-
-            if(currentLattitude == null || currentLongitude == null){
+            if (currentLattitude == null || currentLongitude == null) {
 
                 stopThread = true;
                 GradientDrawable gradientDrawable = (GradientDrawable) sendSMSBtn.getBackground().mutate();
@@ -440,7 +401,55 @@ public class MainActivity extends Activity implements LocationListener {
                 Toast.makeText(getApplicationContext(),
                         "No gps values!",
                         Toast.LENGTH_LONG).show();
-            }else{
+            } else {
+
+                addresses = geocoder.getFromLocation(currentLattitude, currentLongitude, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
+                String address = addresses.get(0).getAddressLine(0);
+                message = message + " \nZeitpunkt: " + currentTime.toString()
+                        + " \nLängengrad: " + currentLongitude.toString()
+                        + " \nBreitengrad: " + currentLattitude.toString()
+                        + " \nAdresse: " + address;
+                //+ " \nLink: " + googleMapsHeader + address.replace(" ", "");
+
+                //}
+
+                // message can have only 160 characters
+                SmsManager smsManager = SmsManager.getDefault();
+                ArrayList<String> parts = smsManager.divideMessage(message);
+                smsManager.sendMultipartTextMessage(currentNumber, null, parts, null, null);
+
+                //SystemClock.sleep(1000);
+            }
+
+
+        } catch (Exception e) {
+            Toast.makeText(getApplicationContext(),
+                    "Sending SMS failed.",
+                    Toast.LENGTH_LONG).show();
+            e.printStackTrace();
+        }
+
+    }
+
+    public void DoSendLocation(String currentNumber) {
+        // toPhoneNumber = toPhoneNumberET.getText().toString();
+        Date currentTime = Calendar.getInstance().getTime();
+        Geocoder geocoder;
+        List<Address> addresses;
+        geocoder = new Geocoder(this, Locale.getDefault());
+        String googleMapsHeader = "https://maps.google.com/?q=";
+
+        try {
+
+            if (currentLattitude == null || currentLongitude == null) {
+
+                stopThread = true;
+                GradientDrawable gradientDrawable = (GradientDrawable) sendSMSBtn.getBackground().mutate();
+                gradientDrawable.setColor(Color.RED);
+                Toast.makeText(getApplicationContext(),
+                        "No gps values!",
+                        Toast.LENGTH_LONG).show();
+            } else {
 
                 addresses = geocoder.getFromLocation(currentLattitude, currentLongitude, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
                 String address = addresses.get(0).getAddressLine(0);
@@ -452,7 +461,7 @@ public class MainActivity extends Activity implements LocationListener {
             }
 
 
-        }catch (Exception e) {
+        } catch (Exception e) {
             Toast.makeText(getApplicationContext(),
                     "Sending SMS failed.",
                     Toast.LENGTH_LONG).show();
@@ -475,46 +484,18 @@ public class MainActivity extends Activity implements LocationListener {
 
     @Override
     public void onProviderDisabled(String provider) {
-        Log.d("Latitude","disable");
+        Log.d("Latitude", "disable");
     }
 
     @Override
     public void onProviderEnabled(String provider) {
-        Log.d("Latitude","enable");
+        Log.d("Latitude", "enable");
     }
 
     @Override
     public void onStatusChanged(String provider, int status, Bundle extras) {
-        Log.d("Latitude","status");
+        Log.d("Latitude", "status");
     }
 
-
-
-
-
-    /*public class MyService extends Service {
-
-        @Override
-        public IBinder onBind(Intent intent) {
-            return null;
-        }
-        @Override
-        public void onCreate() {
-            Toast.makeText(this, "Service Created", Toast.LENGTH_LONG).show();
-
-
-        }
-        @Override
-        public void onStart(Intent intent, int startid) {
-            Toast.makeText(this, "Service Started", Toast.LENGTH_LONG).show();
-
-            while(stopService)
-        }
-        @Override
-        public void onDestroy() {
-            Toast.makeText(this, "Service Stopped", Toast.LENGTH_LONG).show();
-            myPlayer.stop();
-        }
-    }*/
 
 }
