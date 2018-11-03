@@ -52,7 +52,7 @@ public class MainActivity extends Activity implements LocationListener {
         setContentView(R.layout.activity_main);
         sendSMSBtn = (ImageButton) findViewById(R.id.sendSMSBtn);
 
-
+        //test
         /*sendSMSBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 sendSMS();
