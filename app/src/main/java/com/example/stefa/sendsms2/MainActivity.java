@@ -53,30 +53,6 @@ public class MainActivity extends Activity implements LocationListener {
         sendSMSBtn = (ImageButton) findViewById(R.id.sendSMSBtn);
 
 
-        /////////////////////////////////
-        //TODO: Remove this before merge
-        Button testbutton = (Button) findViewById(R.id.button);
-
-        testbutton.setOnTouchListener(new View.OnTouchListener() {
-            public boolean onTouch(View v, MotionEvent event) {
-                EditText textField = (EditText) findViewById(R.id.editText);
-
-                SharedPreferences sharedPreferences= PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
-                String interval=sharedPreferences.getString("interval", "Default");
-                String light=sharedPreferences.getString("light", "Default");
-
-                textField.setTextColor(Color.RED);
-                textField.setText("interval: "+interval + "light: "+light);
-                return true;
-            }
-        });
-
-
-
-
-        ///////////////////////////////
-
-
         /*sendSMSBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 sendSMS();
