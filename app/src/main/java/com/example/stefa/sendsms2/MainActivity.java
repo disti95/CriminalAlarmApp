@@ -17,6 +17,7 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -28,6 +29,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -45,11 +47,12 @@ public class MainActivity extends Activity implements LocationListener {
     LocationManager locationManager;
     long lastDown;
     long lastDuration;
+    MediaPlayer mP;
 
     public static boolean stopThread = false;
     public static boolean stopService = false;
     public static boolean IsActive = false;
-    public static int TIME_DELAY = 20000;
+    //public static int TIME_DELAY = 20000;
     public boolean flashLightStatus = false;
     private static final int CAMERA_REQUEST = 50;
 
@@ -134,6 +137,26 @@ public class MainActivity extends Activity implements LocationListener {
 
                 requestPermissions(permissions, PERMISSION_REQUEST_CODE);
             }
+            try{
+                //mP= new MediaPlayer();
+                mP = MediaPlayer.create(MainActivity.this,R.raw.siren_noise);
+                mP.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+
+                    @Override
+                    public void onCompletion(MediaPlayer mp) {
+                        mP.start();
+                    }
+
+                });
+                int a=1;
+            }catch (Exception err){
+                int a=1;
+            }
+
+
+
+
+
 
 //            final boolean hasCameraFlash = getPackageManager().
 //                    hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH);
@@ -195,14 +218,27 @@ public class MainActivity extends Activity implements LocationListener {
                 btn.setBackgroundResource(R.drawable.circle_danger);
                 //setAlarmButtonColor(Color.RED);
                 stopGPS();
-                flashLightOff();
+
+                if(settings.ActivateLight){
+                    flashLightOff();
+                }
+                if(settings.ActivateAudio){
+                    mP.pause();
+                }
+
 
             } else {
                 return;
             }
         } else {
 
-            flashLightOn();
+            if(settings.ActivateLight){
+                flashLightOn();
+            }
+            if(settings.ActivateAudio){
+                mP.start();
+            }
+
             //sendSMSBtn.setBackgroundColor(Color.GREEN);
             configBtn.setClickable(false);
             configBtn.setEnabled(false);
@@ -224,6 +260,15 @@ public class MainActivity extends Activity implements LocationListener {
                     }
                 });
         alertDialog.show();
+    }
+
+    private void SoundOn(){
+
+
+    }
+
+    private void SoundOff(){
+
     }
 
 
@@ -316,7 +361,7 @@ public class MainActivity extends Activity implements LocationListener {
                                 Thread.sleep(1000);
 
                             }
-                            Thread.sleep(TIME_DELAY);
+                            Thread.sleep(alarmSettings.SendingInterval);
                         }
                     } catch (InterruptedException e) {
                         e.printStackTrace();

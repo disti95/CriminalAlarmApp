@@ -18,6 +18,7 @@ public class ConfigParameters {
     public boolean ActivateLight;
     public boolean ActivateAudio;
     public int AutoOFF;
+    public boolean LockScreen;
 
 
     public ConfigParameters(Activity a){
@@ -50,17 +51,20 @@ public class ConfigParameters {
         }
 
 
-//        int interval=sharedPreferences.getInt("interval", 60000);
-//        SendingInterval=interval;
-//
-//        boolean activateLight=sharedPreferences.getBoolean("light", false);
-//        ActivateLight=activateLight;
+        int interval=Integer.parseInt(sharedPreferences.getString("interval", null));
+        SendingInterval=interval;
 
-//        boolean activateAudio=sharedPreferences.getBoolean("???", false);
-//        ActivateAudio=activateAudio;
+        boolean activateLight=Boolean.parseBoolean(sharedPreferences.getString("light", null));
+        ActivateLight=activateLight;
 
-//        int autoOFF=sharedPreferences.getInt("autoOff", -1);
-//        AutoOFF=autoOFF;
+        boolean activateAudio=Boolean.parseBoolean(sharedPreferences.getString("alarm", null));
+        ActivateAudio=activateAudio;
+
+        int autoOFF=Integer.parseInt(sharedPreferences.getString("auto_off", null));
+        AutoOFF=autoOFF;
+
+        boolean lockScreen=Boolean.parseBoolean(sharedPreferences.getString("lockScreen", null));
+        LockScreen=lockScreen;
 
 
     }

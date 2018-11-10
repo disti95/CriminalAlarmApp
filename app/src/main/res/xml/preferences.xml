@@ -29,6 +29,7 @@
                     android:entries="@array/bool"
                     android:entryValues="@array/bool_values"
                     android:dialogTitle="Turn on Light while sending"
+                    android:defaultValue="false"
                     />
                 <ListPreference
                     android:dependency="alarm"
@@ -38,6 +39,17 @@
                     android:entries="@array/bool"
                     android:entryValues="@array/bool_values"
                     android:dialogTitle=""
+                    android:defaultValue="false"
+                    />
+                <ListPreference
+                    android:dependency="lockScreen"
+                    android:key="lockScreen"
+                    android:title="Lock Screen"
+                    android:summary=""
+                    android:entries="@array/lockScreen"
+                    android:entryValues="@array/lockScreen_values"
+                    android:dialogTitle=""
+                    android:defaultValue="false"
                     />
                 <EditTextPreference
                     android:key="message"
