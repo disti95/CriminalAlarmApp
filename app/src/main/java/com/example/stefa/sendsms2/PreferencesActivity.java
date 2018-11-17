@@ -1,12 +1,20 @@
 package com.example.stefa.sendsms2;
 
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.EditTextPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceGroup;
+import android.provider.ContactsContract;
+import android.widget.ListView;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 
 public class PreferencesActivity extends PreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener{
 
@@ -15,6 +23,27 @@ public class PreferencesActivity extends PreferenceActivity implements SharedPre
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.preferences);
         initSummary(getPreferenceScreen());
+        loadContactsToContactList();
+    }
+
+    public void loadContactsToContactList() {
+        ListPreference listPreference = (ListPreference) getPreferenceScreen().findPreference("t2");
+        ArrayList<String> nameList = new ArrayList<>();
+        ArrayList<String> numberList = new ArrayList<>();
+        Cursor contacts = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,null,null, null);
+        if(contacts != null && contacts.getCount() != 0) {
+            while (contacts.moveToNext()) {
+                String name = contacts.getString(contacts.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
+                String phoneNumber = contacts.getString(contacts.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+                if(name != null && phoneNumber != null) {
+                         nameList.add(name);
+                         numberList.add(phoneNumber);
+                }
+            }
+            contacts.close();
+        }
+        listPreference.setEntries(nameList.toArray(new String[0]));
+        listPreference.setEntryValues(numberList.toArray(new String[0]));
     }
 
     @Override

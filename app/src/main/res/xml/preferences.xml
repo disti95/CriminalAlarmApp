@@ -21,36 +21,6 @@
                     android:dialogTitle="Auto turn off tracking"
                     android:defaultValue="300000"
                     />
-                <ListPreference
-                    android:dependency="light"
-                    android:key="light"
-                    android:title="Light"
-                    android:summary="Activate Light while alarm is active"
-                    android:entries="@array/bool"
-                    android:entryValues="@array/bool_values"
-                    android:dialogTitle="Turn on Light while sending"
-                    android:defaultValue="false"
-                    />
-                <ListPreference
-                    android:dependency="alarm"
-                    android:key="alarm"
-                    android:title="Alarm"
-                    android:summary=""
-                    android:entries="@array/bool"
-                    android:entryValues="@array/bool_values"
-                    android:dialogTitle=""
-                    android:defaultValue="false"
-                    />
-                <ListPreference
-                    android:dependency="lockScreen"
-                    android:key="lockScreen"
-                    android:title="Lock Screen"
-                    android:summary=""
-                    android:entries="@array/lockScreen"
-                    android:entryValues="@array/lockScreen_values"
-                    android:dialogTitle=""
-                    android:defaultValue="false"
-                    />
                 <EditTextPreference
                     android:key="message"
                     android:title="Message"
@@ -63,6 +33,9 @@
                     <!--android:summary="code"-->
                     <!--android:defaultValue=""-->
                     <!--/>-->
+                <CheckBoxPreference android:key="light"  android:title="Light" android:summary="Activate Light while alarm is active" />
+                <CheckBoxPreference android:key="alarm"  android:title="Alarm" android:summary="" />
+                <CheckBoxPreference android:key="lockScreen"  android:title="Lock Screen" android:summary="Lock Screen at activation" />
         </PreferenceCategory>
 
         <PreferenceCategory
@@ -99,12 +72,21 @@
                     android:defaultValue=""
                     />
         </PreferenceCategory>
-    <!--<CheckBoxPreference-->
-        <!--android:key="contact1"-->
-        <!--android:title="@string/pref_sync"-->
-        <!--android:summary="@string/pref_sync_summ"-->
-        <!--android:defaultValue="true" />-->
-
+        <ListPreference
+            android:dependency="test"
+            android:key="test"
+            android:title="test"
+            android:summary=""
+            android:entries="@array/lockScreen"
+            android:entryValues="@array/lockScreen_values"
+            />
+        <ListPreference
+            android:key="t2"
+            android:title="Language"
+            android:dialogTitle="Application language"
+            android:summary="Select the Application language"
+            android:checkMark="?android:attr/listChoiceIndicatorMultiple"
+            />
 
 
 </PreferenceScreen>

@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.hardware.camera2.CameraAccessException;
@@ -21,10 +22,12 @@ import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.provider.ContactsContract;
 import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
@@ -69,6 +72,44 @@ public class MainActivity extends Activity implements LocationListener {
             }
         });*/
 
+
+        /////////////////////////////////
+        //TODO: Remove this before merge
+        Button testbutton = (Button) findViewById(R.id.button);
+        testbutton.setOnTouchListener(new View.OnTouchListener() {
+            public boolean onTouch(View v, MotionEvent event) {
+
+                EditText textField = (EditText) findViewById(R.id.editText);
+
+                try {
+
+                    Cursor phones = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,null,null, null);
+                    while (phones.moveToNext())
+                    {
+                        String name=phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
+                        String phoneNumber = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+                        textField.setTextColor(Color.RED);
+                        textField.setText(name + " " + phoneNumber);
+                    }
+                    phones.close();
+
+
+//
+//                    SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+//                    Boolean ena = sharedPreferences.getBoolean("enabled", true);
+//                    textField.setTextColor(Color.RED);
+//                    textField.setText("enabled:" + ena);
+                }
+                catch (Exception e) {
+                    textField.setTextColor(Color.RED);
+                    textField.setText(e.getMessage());
+                }
+                return true;
+            }
+        });
+        ///////////////////////////////
+
+
         sendSMSBtn.setOnTouchListener(new View.OnTouchListener() {
             public boolean onTouch(View v, MotionEvent event) {
                 touch(v, event);
@@ -86,6 +127,17 @@ public class MainActivity extends Activity implements LocationListener {
 
         int PERMISSION_REQUEST_CODE = 1;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+
+            if (checkSelfPermission(Manifest.permission.READ_CONTACTS)
+                    == PackageManager.PERMISSION_DENIED) {
+
+                Log.d("permission", "permission denied to READ_CONTACTS - requesting it");
+                String[] permissions = {Manifest.permission.READ_CONTACTS};
+
+                requestPermissions(permissions, PERMISSION_REQUEST_CODE);
+
+            }
+
 
             if (checkSelfPermission(Manifest.permission.SEND_SMS)
                     == PackageManager.PERMISSION_DENIED) {

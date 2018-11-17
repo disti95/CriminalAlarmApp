@@ -54,16 +54,16 @@ public class ConfigParameters {
         int interval=Integer.parseInt(sharedPreferences.getString("interval", null));
         SendingInterval=interval;
 
-        boolean activateLight=Boolean.parseBoolean(sharedPreferences.getString("light", null));
+        boolean activateLight=sharedPreferences.getBoolean("light", false);
         ActivateLight=activateLight;
 
-        boolean activateAudio=Boolean.parseBoolean(sharedPreferences.getString("alarm", null));
+        boolean activateAudio=sharedPreferences.getBoolean("alarm", false);
         ActivateAudio=activateAudio;
 
         int autoOFF=Integer.parseInt(sharedPreferences.getString("auto_off", null));
         AutoOFF=autoOFF;
 
-        boolean lockScreen=Boolean.parseBoolean(sharedPreferences.getString("lockScreen", null));
+        boolean lockScreen=sharedPreferences.getBoolean("lockScreen", false);
         LockScreen=lockScreen;
 
 

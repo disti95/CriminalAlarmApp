@@ -64,5 +64,25 @@
         android:layout_marginEnd="25dp"
         android:layout_marginTop="28dp" />
 
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="65dp"
+        android:text="Button" />
+
+    <EditText
+        android:id="@+id/editText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="75dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Name" />
+
     //android:src="@android:drawable/ic_menu_preferences"
 </RelativeLayout >
