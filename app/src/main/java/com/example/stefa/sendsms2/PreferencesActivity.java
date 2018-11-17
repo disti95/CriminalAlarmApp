@@ -28,7 +28,7 @@ public class PreferencesActivity extends PreferenceActivity implements SharedPre
     }
 
     public void loadContactsToContactList() {
-        MultiSelectListPreference listPreference = (MultiSelectListPreference) getPreferenceScreen().findPreference("multi_select_list_preference_1");
+        MultiSelectListPreference listPreference = (MultiSelectListPreference) getPreferenceScreen().findPreference("contactList");
         ArrayList<String> nameList = new ArrayList<>();
         ArrayList<String> numberList = new ArrayList<>();
         Cursor contacts = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,null,null, null);

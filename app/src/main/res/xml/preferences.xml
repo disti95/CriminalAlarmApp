@@ -72,20 +72,12 @@
                     android:defaultValue=""
                     />
         </PreferenceCategory>
-        <ListPreference
-            android:dependency="test"
-            android:key="test"
-            android:title="test"
-            android:summary=""
-            android:entries="@array/lockScreen"
-            android:entryValues="@array/lockScreen_values"
-            />
         <MultiSelectListPreference
             android:defaultValue="@array/empty_array"
             android:entries="@array/auto_off"
             android:entryValues="@array/auto_off_values"
-            android:key="multi_select_list_preference_1"
-            android:title="Multi select list preference" />
+            android:key="contactList"
+            android:title="Contact List" />
 
 
 
