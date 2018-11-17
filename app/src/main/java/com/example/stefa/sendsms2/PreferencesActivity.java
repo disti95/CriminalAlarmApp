@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.EditTextPreference;
 import android.preference.ListPreference;
+import android.preference.MultiSelectListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceGroup;
@@ -27,7 +28,7 @@ public class PreferencesActivity extends PreferenceActivity implements SharedPre
     }
 
     public void loadContactsToContactList() {
-        ListPreference listPreference = (ListPreference) getPreferenceScreen().findPreference("t2");
+        MultiSelectListPreference listPreference = (MultiSelectListPreference) getPreferenceScreen().findPreference("multi_select_list_preference_1");
         ArrayList<String> nameList = new ArrayList<>();
         ArrayList<String> numberList = new ArrayList<>();
         Cursor contacts = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,null,null, null);

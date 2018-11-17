@@ -80,13 +80,13 @@
             android:entries="@array/lockScreen"
             android:entryValues="@array/lockScreen_values"
             />
-        <ListPreference
-            android:key="t2"
-            android:title="Language"
-            android:dialogTitle="Application language"
-            android:summary="Select the Application language"
-            android:checkMark="?android:attr/listChoiceIndicatorMultiple"
-            />
+        <MultiSelectListPreference
+            android:defaultValue="@array/empty_array"
+            android:entries="@array/auto_off"
+            android:entryValues="@array/auto_off_values"
+            android:key="multi_select_list_preference_1"
+            android:title="Multi select list preference" />
+
 
 
 </PreferenceScreen>
