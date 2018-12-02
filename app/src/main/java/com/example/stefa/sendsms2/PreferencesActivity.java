@@ -10,41 +10,71 @@ import android.preference.MultiSelectListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceGroup;
+import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
 import android.widget.ListView;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 public class PreferencesActivity extends PreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener{
+
+    public static final ArrayList<String> contactLists = new ArrayList<String>(){{
+        this.add("contact1");
+        this.add("contact2");
+        this.add("contact3");
+        this.add("contact4");
+        this.add("contact5");
+    }};
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.preferences);
-        initSummary(getPreferenceScreen());
         loadContactsToContactList();
+        initSummary(getPreferenceScreen());
     }
 
     public void loadContactsToContactList() {
-        MultiSelectListPreference listPreference = (MultiSelectListPreference) getPreferenceScreen().findPreference("contactList");
-        ArrayList<String> nameList = new ArrayList<>();
-        ArrayList<String> numberList = new ArrayList<>();
+        HashMap<String, String> contactMap = new HashMap<>();
         Cursor contacts = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,null,null, null);
         if(contacts != null && contacts.getCount() != 0) {
             while (contacts.moveToNext()) {
                 String name = contacts.getString(contacts.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
                 String phoneNumber = contacts.getString(contacts.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
                 if(name != null && phoneNumber != null) {
-                         nameList.add(name);
-                         numberList.add(phoneNumber);
+                    contactMap.put(name, phoneNumber);
                 }
             }
             contacts.close();
         }
-        listPreference.setEntries(nameList.toArray(new String[0]));
-        listPreference.setEntryValues(numberList.toArray(new String[0]));
+        HashMap contactsSharedPreferences = getContacts();
+        for (String contactsListKey: contactLists) {
+            ArrayList<String> nameList = new ArrayList<>();
+            ArrayList<String> numberList = new ArrayList<>();
+            ListPreference listPreference = (ListPreference) getPreferenceScreen().findPreference(contactsListKey);
+            for(Map.Entry entry: contactMap.entrySet()){
+                if(!contactsSharedPreferences.containsValue(entry.getValue()) || (contactsSharedPreferences.containsValue(entry.getValue()) && contactsSharedPreferences.get(contactsListKey).equals(entry.getValue()))){
+                    nameList.add(entry.getKey().toString());
+                    numberList.add(entry.getValue().toString());
+                }
+            }
+            listPreference.setEntries(nameList.toArray(new String[0]));
+            listPreference.setEntryValues(numberList.toArray(new String[0]));
+            //listPreference.setSummary(listPreference.getEntry());
+        }
+
+    }
+
+    private HashMap getContacts() {
+        HashMap<String, String> contactsSharedPreferences = new HashMap<>();
+        for (String contactsListKey: contactLists) {
+            contactsSharedPreferences.put(contactsListKey, getPreferenceScreen().getSharedPreferences().getString(contactsListKey,""));
+        }
+        return contactsSharedPreferences;
     }
 
     @Override
@@ -75,6 +105,7 @@ public class PreferencesActivity extends PreferenceActivity implements SharedPre
             ListPreference listPreference = (ListPreference) pref;
             pref.setSummary(listPreference.getEntry());
         }
+        loadContactsToContactList();
     }
 
     private void initSummary(Preference p) {

@@ -41,43 +41,32 @@
         <PreferenceCategory
             android:title="Contacts"
             android:key="contacts">
-                <EditTextPreference
+                <ListPreference
+                    android:entries="@array/empty_array"
+                    android:entryValues="@array/empty_array"
                     android:key="contact1"
-                    android:title="Contact 1"
-                    android:summary="contact1"
-                    android:defaultValue=""
-                />
-                <EditTextPreference
+                    android:title="Contact 1"/>
+                <ListPreference
+                    android:entries="@array/empty_array"
+                    android:entryValues="@array/empty_array"
                     android:key="contact2"
-                    android:title="Contact 2"
-                    android:summary="contact2"
-                    android:defaultValue=""
-                    />
-                <EditTextPreference
+                    android:title="Contact2" />
+                <ListPreference
+                    android:entries="@array/empty_array"
+                    android:entryValues="@array/empty_array"
                     android:key="contact3"
-                    android:title="Contact 3"
-                    android:summary="contact3"
-                    android:defaultValue=""
-                    />
-                <EditTextPreference
+                    android:title="Contact 3" />
+                <ListPreference
+                    android:entries="@array/empty_array"
+                    android:entryValues="@array/empty_array"
                     android:key="contact4"
-                    android:title="Contact 4"
-                    android:summary="contact4"
-                    android:defaultValue=""
-                    />
-                <EditTextPreference
+                    android:title="Contact4" />
+                <ListPreference
+                    android:entries="@array/empty_array"
+                    android:entryValues="@array/empty_array"
                     android:key="contact5"
-                    android:title="Contact 5"
-                    android:summary="contact5"
-                    android:defaultValue=""
-                    />
+                    android:title="Contact 5" />
         </PreferenceCategory>
-        <MultiSelectListPreference
-            android:defaultValue="@array/empty_array"
-            android:entries="@array/auto_off"
-            android:entryValues="@array/auto_off_values"
-            android:key="contactList"
-            android:title="Contact List" />
 
 
 

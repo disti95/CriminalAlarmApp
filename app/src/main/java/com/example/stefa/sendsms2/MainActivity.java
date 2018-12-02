@@ -83,22 +83,22 @@ public class MainActivity extends Activity implements LocationListener {
 
                 try {
 
-                    Cursor phones = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,null,null, null);
-                    while (phones.moveToNext())
-                    {
-                        String name=phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
-                        String phoneNumber = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-                        textField.setTextColor(Color.RED);
-                        textField.setText(name + " " + phoneNumber);
-                    }
-                    phones.close();
+//                    Cursor phones = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,null,null, null);
+//                    while (phones.moveToNext())
+//                    {
+//                        String name=phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
+//                        String phoneNumber = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+//                        textField.setTextColor(Color.RED);
+//                        textField.setText(name + " " + phoneNumber);
+//                    }
+//                    phones.close();
 
 
-//
-//                    SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
-//                    Boolean ena = sharedPreferences.getBoolean("enabled", true);
-//                    textField.setTextColor(Color.RED);
-//                    textField.setText("enabled:" + ena);
+
+                    SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+                    String ena = sharedPreferences.getString("list_preference_1", "");
+                    textField.setTextColor(Color.RED);
+                    textField.setText(ena);
                 }
                 catch (Exception e) {
                     textField.setTextColor(Color.RED);
