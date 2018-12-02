@@ -56,6 +56,8 @@ public class PreferencesActivity extends PreferenceActivity implements SharedPre
                     numberList.add(entry.getValue().toString());
                 }
             }
+            nameList.add("unset");
+            numberList.add("");
             listPreference.setEntries(nameList.toArray(new String[0]));
             listPreference.setEntryValues(numberList.toArray(new String[0]));
         }
