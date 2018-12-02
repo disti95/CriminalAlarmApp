@@ -5,7 +5,6 @@
     <string name="title_activity_main2">Main2Activity</string>
     <string name="title_activity_settings">SettingsActivity</string>
     <string name="information">information</string>
-    <string name="emptyString"></string>
     <string-array name="interval">
         <item>"30 seconds"</item>
         <item>"1 minute"</item>
@@ -44,8 +43,5 @@
         <item>"1800000"</item>
         <item>"3600000"</item>
     </string-array>
-
     <string-array name="empty_array"/>
-
-
 </resources>

@@ -2,32 +2,26 @@ package com.example.stefa.sendsms2;
 
 import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.EditTextPreference;
 import android.preference.ListPreference;
-import android.preference.MultiSelectListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceGroup;
-import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
-import android.widget.ListView;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
 public class PreferencesActivity extends PreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener{
 
     public static final ArrayList<String> contactLists = new ArrayList<String>(){{
-        this.add("contact1");
-        this.add("contact2");
-        this.add("contact3");
-        this.add("contact4");
-        this.add("contact5");
+        this.add(PreferencesString.CONTACT1);
+        this.add(PreferencesString.CONTACT2);
+        this.add(PreferencesString.CONTACT3);
+        this.add(PreferencesString.CONTACT4);
+        this.add(PreferencesString.CONTACT5);
     }};
 
     @Override
@@ -64,7 +58,6 @@ public class PreferencesActivity extends PreferenceActivity implements SharedPre
             }
             listPreference.setEntries(nameList.toArray(new String[0]));
             listPreference.setEntryValues(numberList.toArray(new String[0]));
-            //listPreference.setSummary(listPreference.getEntry());
         }
 
     }

@@ -8,7 +8,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.hardware.camera2.CameraAccessException;
@@ -22,7 +21,6 @@ import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.provider.ContactsContract;
 import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -32,7 +30,6 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -96,7 +93,7 @@ public class MainActivity extends Activity implements LocationListener {
 
 
                     SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
-                    String ena = sharedPreferences.getString("list_preference_1", "");
+                    String ena = sharedPreferences.getString(PreferencesString.CONTACT1, "");
                     textField.setTextColor(Color.RED);
                     textField.setText(ena);
                 }

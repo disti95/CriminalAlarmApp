@@ -67,7 +67,4 @@
                     android:key="contact5"
                     android:title="Contact 5" />
         </PreferenceCategory>
-
-
-
 </PreferenceScreen>

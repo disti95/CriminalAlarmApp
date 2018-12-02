@@ -1,9 +1,8 @@
 package com.example.stefa.sendsms2;
 
-import android.content.Context;
+import android.app.Activity;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.app.Activity;
 
 import java.util.ArrayList;
 
@@ -24,50 +23,48 @@ public class ConfigParameters {
     public ConfigParameters(Activity a){
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(a);
-        String number1=sharedPreferences.getString("contact1", "Default");
+        String number1=sharedPreferences.getString(PreferencesString.CONTACT1, "Default");
         if(!number1.isEmpty()){
             Contacts.add(number1);
         }
-        String number2=sharedPreferences.getString("contact2", "Default");
+        String number2=sharedPreferences.getString(PreferencesString.CONTACT2, "Default");
         if(!number2.isEmpty()){
             Contacts.add(number2);
         }
-        String number3=sharedPreferences.getString("contact3", "Default");
+        String number3=sharedPreferences.getString(PreferencesString.CONTACT3, "Default");
         if(!number3.isEmpty()){
             Contacts.add(number3);
         }
-        String number4=sharedPreferences.getString("contact4", "Default");
+        String number4=sharedPreferences.getString(PreferencesString.CONTACT4, "Default");
         if(!number4.isEmpty()){
             Contacts.add(number4);
         }
-        String number5=sharedPreferences.getString("contact5", "Default");
+        String number5=sharedPreferences.getString(PreferencesString.CONTACT5, "Default");
         if(!number5.isEmpty()){
             Contacts.add(number5);
         }
 
-        String message=sharedPreferences.getString("message", "Default");
+        String message=sharedPreferences.getString(PreferencesString.MESSAGE, "Default");
         if(!message.isEmpty()){
             Message = message;
         }
 
 
-        int interval=Integer.parseInt(sharedPreferences.getString("interval", null));
+        int interval=Integer.parseInt(sharedPreferences.getString(PreferencesString.INTERVAL, null));
         SendingInterval=interval;
 
-        boolean activateLight=sharedPreferences.getBoolean("light", false);
+        boolean activateLight=sharedPreferences.getBoolean(PreferencesString.LIGHT, false);
         ActivateLight=activateLight;
 
-        boolean activateAudio=sharedPreferences.getBoolean("alarm", false);
+        boolean activateAudio=sharedPreferences.getBoolean(PreferencesString.ALARM, false);
         ActivateAudio=activateAudio;
 
-        int autoOFF=Integer.parseInt(sharedPreferences.getString("auto_off", null));
+        int autoOFF=Integer.parseInt(sharedPreferences.getString(PreferencesString.AUTO_OFF, null));
         AutoOFF=autoOFF;
 
-        boolean lockScreen=sharedPreferences.getBoolean("lockScreen", false);
+        boolean lockScreen=sharedPreferences.getBoolean(PreferencesString.LOCKSCREEN, false);
         LockScreen=lockScreen;
 
-
     }
-
 
 }
