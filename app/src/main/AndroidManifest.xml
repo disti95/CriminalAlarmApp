@@ -26,9 +26,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ConfigActivity"
-            android:screenOrientation="portrait" />
-        <activity
+            android:theme="@style/Preferences"
             android:name=".PreferencesActivity"
             android:screenOrientation="portrait" /><!-- ATTENTION: This was auto-generated to add Google Play services to your project for
      App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information. -->
