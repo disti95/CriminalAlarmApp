@@ -51,6 +51,7 @@ public class MainActivity extends Activity implements LocationListener {
 
     public static boolean stopThread = false;
     public static boolean stopService = false;
+    public static boolean stopBlinkThread = false;
     public static boolean IsActive = false;
     //public static int TIME_DELAY = 20000;
     public boolean flashLightStatus = false;
@@ -210,6 +211,7 @@ public class MainActivity extends Activity implements LocationListener {
 
             if (lastDuration > 5) {
                 stopThread = true;
+                stopBlinkThread = true;
                 IsActive = false;
 
                 configBtn.setClickable(true);
@@ -220,7 +222,8 @@ public class MainActivity extends Activity implements LocationListener {
                 stopGPS();
 
                 if(settings.ActivateLight){
-                    flashLightOff();
+                    //flashLightOff();
+
                 }
                 if(settings.ActivateAudio){
                     mP.pause();
@@ -233,7 +236,8 @@ public class MainActivity extends Activity implements LocationListener {
         } else {
 
             if(settings.ActivateLight){
-                flashLightOn();
+                //flashLightOn();
+                createBlinkLightThread();
             }
             if(settings.ActivateAudio){
                 mP.start();
@@ -374,6 +378,225 @@ public class MainActivity extends Activity implements LocationListener {
             };
 
             stopThread = false;
+            thread.start();
+        } catch (Exception ex) {
+            stopGPS();
+        }
+    }
+
+    protected void createBlinkLightThread() {
+        try {
+            Thread thread = new Thread(new Runnable() {
+//                private ConfigParameters alarmSettings;
+//
+//
+//                {
+////                    this.Numbers = currentNumbers;
+////                    this.Message = message;
+//                    this.alarmSettings = settings;
+//                }
+
+                @Override
+                public void run() {
+
+                    try {
+
+                        while (!stopBlinkThread) {
+
+                            flashLightOn();
+                            if(stopBlinkThread){
+                                flashLightOff();
+                                break;
+                            }
+                            Thread.sleep(500);
+                            if(stopBlinkThread){
+                                flashLightOff();
+                                break;
+                            }
+                            flashLightOff();
+                            if(stopBlinkThread){
+                                flashLightOff();
+                                break;
+                            }
+                            Thread.sleep(500);
+                            if(stopBlinkThread){
+                                flashLightOff();
+                                break;
+                            }
+                            flashLightOn();
+                            if(stopBlinkThread){
+                                flashLightOff();
+                                break;
+                            }
+                            Thread.sleep(500);
+                            if(stopBlinkThread){
+                                flashLightOff();
+                                break;
+                            }
+                            flashLightOff();
+                            if(stopBlinkThread){
+                                flashLightOff();
+                                break;
+                            }
+                            Thread.sleep(500);
+                            if(stopBlinkThread){
+                                flashLightOff();
+                                break;
+                            }
+                            flashLightOn();
+                            if(stopBlinkThread){
+                                flashLightOff();
+                                break;
+                            }
+                            Thread.sleep(500);
+                            if(stopBlinkThread){
+                                flashLightOff();
+                                break;
+                            }
+                            flashLightOff();
+                            if(stopBlinkThread){
+                                flashLightOff();
+                                break;
+                            }
+                            Thread.sleep(500);
+                            if(stopBlinkThread){
+                                flashLightOff();
+                                break;
+                            }
+
+                            flashLightOn();
+                            if(stopBlinkThread){
+                                flashLightOff();
+                                break;
+                            }
+                            Thread.sleep(3000);
+                            if(stopBlinkThread){
+                                flashLightOff();
+                                break;
+                            }
+                            flashLightOff();
+                            if(stopBlinkThread){
+                                flashLightOff();
+                                break;
+                            }
+                            Thread.sleep(1000);
+                            if(stopBlinkThread){
+                                flashLightOff();
+                                break;
+                            }
+                            flashLightOn();
+                            if(stopBlinkThread){
+                                flashLightOff();
+                                break;
+                            }
+                            Thread.sleep(3000);
+                            if(stopBlinkThread){
+                                flashLightOff();
+                                break;
+                            }
+                            flashLightOff();
+                            if(stopBlinkThread){
+                                flashLightOff();
+                                break;
+                            }
+                            Thread.sleep(1000);
+                            if(stopBlinkThread){
+                                flashLightOff();
+                                break;
+                            }
+                            flashLightOn();
+                            if(stopBlinkThread){
+                                flashLightOff();
+                                break;
+                            }
+                            Thread.sleep(3000);
+                            if(stopBlinkThread){
+                                flashLightOff();
+                                break;
+                            }
+                            flashLightOff();
+                            if(stopBlinkThread){
+                                flashLightOff();
+                                break;
+                            }
+                            Thread.sleep(1000);
+                            if(stopBlinkThread){
+                                flashLightOff();
+                                break;
+                            }
+
+                            flashLightOn();
+                            if(stopBlinkThread){
+                                flashLightOff();
+                                break;
+                            }
+                            Thread.sleep(500);
+                            if(stopBlinkThread){
+                                flashLightOff();
+                                break;
+                            }
+                            flashLightOff();
+                            if(stopBlinkThread){
+                                flashLightOff();
+                                break;
+                            }
+                            Thread.sleep(500);
+                            if(stopBlinkThread){
+                                flashLightOff();
+                                break;
+                            }
+                            flashLightOn();
+                            if(stopBlinkThread){
+                                flashLightOff();
+                                break;
+                            }
+                            Thread.sleep(500);
+                            if(stopBlinkThread){
+                                flashLightOff();
+                                break;
+                            }
+                            flashLightOff();
+                            if(stopBlinkThread){
+                                flashLightOff();
+                                break;
+                            }
+                            Thread.sleep(500);
+                            if(stopBlinkThread){
+                                flashLightOff();
+                                break;
+                            }
+                            flashLightOn();
+                            if(stopBlinkThread){
+                                flashLightOff();
+                                break;
+                            }
+                            Thread.sleep(500);
+                            if(stopBlinkThread){
+                                flashLightOff();
+                                break;
+                            }
+                            flashLightOff();
+                            if(stopBlinkThread){
+                                flashLightOff();
+                                break;
+                            }
+                            Thread.sleep(3000);
+                            if(stopBlinkThread){
+                                flashLightOff();
+                                break;
+                            }
+                        }
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+
+                    }
+
+                }
+            }) {
+
+            };
+
+            stopBlinkThread = false;
             thread.start();
         } catch (Exception ex) {
             stopGPS();
