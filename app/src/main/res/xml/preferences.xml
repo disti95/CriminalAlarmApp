@@ -39,9 +39,9 @@
                     <!--android:summary="code"-->
                     <!--android:defaultValue=""-->
                     <!--/>-->
-                <CheckBoxPreference android:key="light"  android:title="Light" android:summary="Activate Light while alarm is active" />
-                <CheckBoxPreference android:key="alarm"  android:title="Alarm" android:summary="" />
-                <CheckBoxPreference android:key="lockScreen"  android:title="Lock Screen" android:summary="Lock Screen at activation" />
+                <SwitchPreference android:key="light"  android:title="Light" android:summary="Activate Light while alarm is active" />
+                <SwitchPreference android:key="alarm"  android:title="Alarm" android:summary="" />
+                <SwitchPreference android:key="lockScreen"  android:title="Lock Screen" android:summary="Lock Screen at activation" />
         </PreferenceCategory>
 
         <PreferenceCategory

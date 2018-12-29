@@ -70,43 +70,6 @@ public class MainActivity extends Activity implements LocationListener {
         });*/
 
 
-        /////////////////////////////////
-        //TODO: Remove this before merge
-        Button testbutton = (Button) findViewById(R.id.button);
-        testbutton.setOnTouchListener(new View.OnTouchListener() {
-            public boolean onTouch(View v, MotionEvent event) {
-
-                EditText textField = (EditText) findViewById(R.id.editText);
-
-                try {
-
-//                    Cursor phones = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,null,null, null);
-//                    while (phones.moveToNext())
-//                    {
-//                        String name=phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
-//                        String phoneNumber = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-//                        textField.setTextColor(Color.RED);
-//                        textField.setText(name + " " + phoneNumber);
-//                    }
-//                    phones.close();
-
-
-
-                    SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
-                    String ena = sharedPreferences.getString(PreferencesString.CONTACT1, "");
-                    textField.setTextColor(Color.RED);
-                    textField.setText(ena);
-                }
-                catch (Exception e) {
-                    textField.setTextColor(Color.RED);
-                    textField.setText(e.getMessage());
-                }
-                return true;
-            }
-        });
-        ///////////////////////////////
-
-
         sendSMSBtn.setOnTouchListener(new View.OnTouchListener() {
             public boolean onTouch(View v, MotionEvent event) {
                 touch(v, event);
